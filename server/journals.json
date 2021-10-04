@@ -1,0 +1,14 @@
+{ "articles" : [{
+    "title" : "Test article",
+    "body" : "Test body lalalalalalalala",
+    "date" : "4/10/2021",
+    "comments" : [],
+    "reactions" : []
+},
+{
+    "title" : "Test article2",
+    "body" : "Test body2 lalalalalalalala",
+    "date" : "5/10/2021",
+    "comments" : [],
+    "reactions" : []
+}] }

@@ -3,6 +3,26 @@ function exampleFetch() {
     .then(res=>res.json()).then(data => (console.log(data)))
 }
 
+function initialise() {
+    let newJournalButton = document.getElementById('newJournal')
+    let newJournalForm = document.getElementById('newJournalForm')
+    newJournalButton.addEventListener('click', ()=> {
+        newJournalFrom.style.display = 'block'
+    })
+    newJournalForm.addEventListener('submit', (e)=> {
+        e.preventDefault();
+        console.log(e);
+        let title = e.target.newJournalTitle.value;
+        let content = e.target.newJournalBody.value;
+        let data = { "title": title, "content": content}
+        console.log(data);
+        fetch("http://localhost:3000/article", {method: "POST", 
+        body: JSON.stringify({data}),
+        headers : {"Content-Type" : "application/json" }
+    })
+        .catch(error => console.warn(error))
+    })
+}
 
 
 function renderPosts(articleIDToPass, title, body, date, comments, reactions) {
@@ -60,3 +80,4 @@ function getJournals() {
 }
 
 getJournals();
+initialise();

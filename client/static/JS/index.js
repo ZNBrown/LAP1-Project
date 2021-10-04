@@ -3,6 +3,8 @@ function exampleFetch() {
     .then(res=>res.json()).then(data => (console.log(data)))
 }
 
+
+
 function renderPosts(articleIDToPass, title, body, date, comments, reactions) {
     let parentDiv = document.createElement('div')
     let blogTitle = document.createElement('h2')

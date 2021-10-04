@@ -4,7 +4,13 @@ function exampleFetch() {
 }
 
 function refresh(){
-    location.reload();
+
+    position = window.scrollY
+    section = document.getElementById('dynamic')
+    while(section.firstChild){
+        section.firstChild.remove()
+    }
+    getJournals(position);
 }
 
 function initialise() {
@@ -26,35 +32,41 @@ function initialise() {
     })
         .catch(error => console.warn(error))
     })
+
 }
 
-function handleEmoji(e) {
+async function handleEmoji(e) {
     e.preventDefault();
     let articleID = e.target.articleID2.value;
     let submitterID = e.submitter.id;
     let data = { articleID : articleID, submitterID : submitterID}
-    console.log(data)
-    fetch("http://localhost:3000/react", {method: "POST", 
+    try{
+    response = await fetch("http://localhost:3000/react", {method: "POST", 
     body: JSON.stringify({data}),
     headers : {"Content-Type" : "application/json" }})
-    .catch(error => console.warn(error))
+
+
+    }
+    catch(error) { console.warn(error) }
+    refresh();
 }
 
-function handleComment(e){
+async function handleComment(e){
     e.preventDefault();
     console.log(e);
     let articleID = e.target.articleID.value;
     let commentData = e.target[0].value;
     let data = { articleID : articleID, commentData : commentData}
     console.log(data)
-    fetch("http://localhost:3000/comment", {method: "POST", 
+    await fetch("http://localhost:3000/comment", {method: "POST", 
     body: JSON.stringify({data}),
     headers : {"Content-Type" : "application/json" }})
     .catch(error => console.warn(error))
+    refresh();
 
 }
 
-function renderPosts(articleIDToPass, title, body, date, comments, reactions) {
+function renderPosts(articleIDToPass, title, body, date, comments, reactions, position) {
     let parentDiv = document.createElement('div')
     let blogTitle = document.createElement('h2')
     let blogContent = document.createElement('p')
@@ -123,15 +135,16 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions) {
     commentForm.append(commentBody, articleID, submitComment)
     buttonParent.append(reactForm, commentButton)
     parentDiv.append(blogTitle, blogContent, buttonParent, commentForm, commentDiv)
-    document.querySelector('body').append(parentDiv);
+    document.querySelector('#dynamic').append(parentDiv);
 
     blogTitle.textContent = title;
     blogContent.textContent = body;
     articleID.value = articleIDToPass;
     articleID2.value = articleIDToPass;
+    window.scroll(0, position)
 }
 
-function getJournals() {
+function getJournals(position=0) {
     fetch("http://localhost:3000/getall")
     .then(res=>res.json()).then(data => {
         let journalNum = data.articles.length;
@@ -142,7 +155,7 @@ function getJournals() {
             let reactions = data.articles[index]['reactions']
             let date = data.articles[index]['date']
             let articleIDToPass = data.articles[index]['articleID']
-            renderPosts(articleIDToPass, title, body, date, comments, reactions)
+            renderPosts(articleIDToPass, title, body, date, comments, reactions, position)
         }
     })
 }

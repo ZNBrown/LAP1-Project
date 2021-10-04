@@ -1,4 +1,5 @@
 { "articles" : [{
+    "articleID" : "0",
     "title" : "Test article",
     "body" : "Test body lalalalalalalala",
     "date" : "4/10/2021",
@@ -6,6 +7,7 @@
     "reactions" : []
 },
 {
+    "articleID" : "1",
     "title" : "Test article2",
     "body" : "Test body2 lalalalalalalala",
     "date" : "5/10/2021",

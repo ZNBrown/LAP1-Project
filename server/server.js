@@ -6,7 +6,7 @@ const fetch = require('node-fetch');
 const journals = require('./journals.json')
 
 app.get('/', (req, res) => {
-    res.json("hello world")
+    res.json(journals.articles[0])
 })
 
 module.exports=(app);

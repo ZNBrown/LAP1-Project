@@ -19,18 +19,19 @@ function initialise() {
     newJournalButton.addEventListener('click', ()=> {
         newJournalFrom.style.display = 'block'
     })
-    newJournalForm.addEventListener('submit', (e)=> {
+    newJournalForm.addEventListener('submit', async (e)=> {
         e.preventDefault();
         console.log(e);
         let title = e.target.newJournalTitle.value;
         let content = e.target.newJournalBody.value;
         let data = { "title": title, "content": content}
         console.log(data);
-        fetch("http://localhost:3000/article", {method: "POST", 
+        await fetch("http://localhost:3000/article", {method: "POST", 
         body: JSON.stringify({data}),
         headers : {"Content-Type" : "application/json" }
     })
         .catch(error => console.warn(error))
+        refresh();
     })
 
 }

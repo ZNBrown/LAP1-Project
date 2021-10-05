@@ -7,11 +7,6 @@ const fs = require('fs');
 const path = require('path');
 const journalBackup = journals;
 
-console.log(testDB)
-cleanDatabase()
-console.log(journals)
-
-
 async function cleanDatabase(){
     await fs.writeFile(path.join(__dirname, '..', 'journals.json'), JSON.stringify(testDB), (error)=> {
         if (error) throw error ; console.log("DB changed to testDB")

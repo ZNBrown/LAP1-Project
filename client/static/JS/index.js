@@ -1,3 +1,5 @@
+const APIkey = 'VUq7xxD1xM1rS9w2Typt9A6VC7soZwLY';
+
 function exampleFetch() {
     fetch("http://localhost:3000/")
     .then(res=>res.json()).then(data => (console.log(data)))
@@ -14,29 +16,49 @@ function refresh(){
 }
 
 function initialise() {
-    let newJournalButton = document.getElementById('newJournal')
-    let newJournalForm = document.getElementById('newJournalForm')
+    let newJournalButton = document.getElementById('newJournal');
+    let newJournalForm = document.getElementById('newJournalForm');
+    let gifButton = document.getElementById('gifButton');
     newJournalButton.addEventListener('click', ()=> {
         newJournalForm.style.display = 'block'
     })
     newJournalForm.addEventListener('submit', async (e)=> {
         e.preventDefault();
         console.log(e);
-        let title = e.target.newJournalTitle.value;
-        let content = e.target.newJournalBody.value;
-        let data = { "title": title, "content": content};
-        console.log(data);
 
-        try {
-        response = await fetch("http://localhost:3000/article", {method: "POST", 
-        body: JSON.stringify({data}),
-        headers : {"Content-Type" : "application/json" }
-        })
-        } catch(error) { console.warn(error) }
-        refresh();
-        document.querySelector('#newJournalTitle').value = "";
-        document.querySelector('#newJournalBody').value = ""; 
-        document.querySelector('#newJournalForm').style.display = 'none';
+        submitterID = e.submitter.id;
+        if (submitterID === "newJournal"){
+            let title = e.target.newJournalTitle.value;
+            let content = e.target.newJournalBody.value;
+            let gifUrl = document.querySelector('#gifLink').value;
+            let data = { "title": title, "content": content, "gifUrl": gifUrl};
+            console.log(data);
+            try {
+                response = await fetch("http://localhost:3000/article", {method: "POST", 
+                body: JSON.stringify({data}),
+                headers : {"Content-Type" : "application/json" }
+                })
+            } catch(error) { console.warn(error) }
+            refresh();
+            document.querySelector('#newJournalTitle').value = "";
+            document.querySelector('#newJournalBody').value = ""; 
+            document.querySelector('#newJournalForm').style.display = 'none';
+            document.querySelector('#gifDisplay').innerHTML = '';
+            document.querySelector('#searchGif').value = "";
+        }   else if (submitterID === "gifButton"){
+            try {
+                searchterm = e.target.searchGif.value;
+                console.log(searchterm);
+                let response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=VUq7xxD1xM1rS9w2Typt9A6VC7soZwLY&q=${searchterm}&limit=1&offset=0&rating=r&lang=en`)
+                let data = await response.json()
+                console.log(data.data[0])
+                let gifUrl = data.data[0]['images']['original']['url'];
+                document.querySelector('#gifDisplay').innerHTML = `<img src="${gifUrl}"></img>`
+                document.querySelector('#gifLink').value = gifUrl;
+            
+            } catch (err) {console.warn(err)}
+
+        }
     })
 }
 
@@ -72,7 +94,7 @@ async function handleComment(e){
 
 }
 
-function renderPosts(articleIDToPass, title, body, date, comments, reactions, position) {
+function renderPosts(articleIDToPass, title, body, date, comments, reactions, position, gifUrl) {
     let parentDiv = document.createElement('div');
     let blogTitle = document.createElement('h2');
     let blogContent = document.createElement('p');
@@ -89,21 +111,41 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     let articleID = document.createElement('input');
     let articleID2 = document.createElement('input');
     let submitComment = document.createElement('input');
-
+    let gifContainer = document.createElement('img');
+    let divider = document.createElement('hr');
 
     showComments.addEventListener('click', () => {
-        commentDiv.style.display = "block";
+        if (commentDiv.style.display === "block"){
+            parentDiv.style.gridTemplateRows = "50px 1fr 50px";
+            commentDiv.style.display = "none";
+            commentForm.style.display = "none";
+            parentDiv.style.height = `500px`;
+        } else {
+            parentDiv.style.gridTemplateRows = `50px 3fr 50px 2fr `;
+            parentDiv.style.height = `800px`;
+            commentDiv.style.display = "block";
+            commentForm.style.display = "none";
+        }
     })
     commentButton.addEventListener('click', () => {
-        commentForm.style.display = "block";
+        if (commentForm.style.display === "block"){
+            parentDiv.style.gridTemplateRows = "50px 1fr 50px";
+            commentDiv.style.display = "none";
+            commentForm.style.display = "none";
+        } else {
+            parentDiv.style.gridTemplateRows = "50px 4fr 50px 1fr ";
+            commentDiv.style.display = "none";
+            commentForm.style.display = "block";
+        }
     })
     reactForm.addEventListener('submit', handleEmoji);
     commentForm.addEventListener('submit', handleComment);
 
-
-    thumbButtonUp.innerText = `👍: ${reactions[0]['thumbsUp']}`;
-    thumbButtonDown.innerText = `👎: ${reactions[1]['thumbsDown']}`;
-    eyesButton.innerText = `👀: ${reactions[2]['eyes']}`;
+    commentButton.textContent = "Add Comment";
+    showComments.innerText = 'Show Comments';
+    thumbButtonUp.innerText = `👍 : ${reactions[0]['thumbsUp']}`;
+    thumbButtonDown.innerText = `👎 : ${reactions[1]['thumbsDown']}`;
+    eyesButton.innerText = `👀 : ${reactions[2]['eyes']}`;
     thumbButtonDown.setAttribute('id', "thumbButtonDown");
     thumbButtonUp.setAttribute('id', "thumbButtonUp");
     eyesButton.setAttribute('id' , "eyesButton");
@@ -119,7 +161,8 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     articleID.type = 'hidden';
     articleID2.type = 'hidden';
     submitComment.type = 'submit';
-    submitComment.value = 'Submit Comment'
+    submitComment.value = 'Submit Comment';
+   
 
     parentDiv.setAttribute("class", "parentDiv");
     blogContent.setAttribute("class", "blogContent");
@@ -132,12 +175,14 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     articleID.setAttribute("class", "articleID");
     articleID2.setAttribute("class", "articleID");
     submitComment.setAttribute("class", "submitComment");
+    gifContainer.setAttribute("class", "gifContainer");
+    commentDiv.setAttribute("class","commentDiv");
+    
 
-
-    commentButton.textContent = "Comment";
-
+    commentDiv.append(divider);
     for (const comment of comments) {
         let commentToWrite = document.createElement('p');
+        commentToWrite.setAttribute("class","comment")
         commentToWrite.innerText = comment;
         commentDiv.append(commentToWrite);
     }
@@ -145,14 +190,21 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
 
     reactForm.append(thumbButtonUp, thumbButtonDown, eyesButton, articleID2);
     commentForm.append(commentBody, articleID, submitComment);
-    buttonParent.append(reactForm, commentButton);
-    parentDiv.append(blogTitle, blogContent, buttonParent, commentForm, commentDiv);
+    buttonParent.append(reactForm, commentButton, showComments);
+    parentDiv.append(blogTitle, gifContainer, blogContent, buttonParent, commentForm, commentDiv);
     document.querySelector('#dynamic').prepend(parentDiv);
 
     blogTitle.textContent = title;
     blogContent.textContent = body;
     articleID.value = articleIDToPass;
     articleID2.value = articleIDToPass;
+  
+    if (gifUrl === undefined || gifUrl === ''){
+        gifUrl = '';
+        gifContainer.style.display = 'none'
+        parentDiv.style.gridTemplateColumns = "100%"
+    }
+    gifContainer.src = gifUrl;
     window.scroll(0, position);
 
 }
@@ -168,7 +220,8 @@ function getJournals(position=0) {
             let reactions = data.articles[index]['reactions'];
             let date = data.articles[index]['date'];
             let articleIDToPass = data.articles[index]['articleID'];
-            renderPosts(articleIDToPass, title, body, date, comments, reactions, position);
+            let gifLink = data.articles[index]['gifUrl']
+            renderPosts(articleIDToPass, title, body, date, comments, reactions, position, gifLink);
         }
     })
 }

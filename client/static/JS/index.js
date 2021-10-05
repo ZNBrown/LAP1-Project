@@ -117,22 +117,24 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
 
     showComments.addEventListener('click', () => {
         if (commentDiv.style.display === "block"){
-            parentDiv.style.gridTemplateRows = "20% 60% 20%";
+            parentDiv.style.gridTemplateRows = "50px 1fr 50px";
             commentDiv.style.display = "none";
             commentForm.style.display = "none";
+            parentDiv.style.height = `500px`;
         } else {
-            parentDiv.style.gridTemplateRows = "20% 40% 20% 20%";
+            parentDiv.style.gridTemplateRows = `50px 3fr 50px 2fr `;
+            parentDiv.style.height = `800px`;
             commentDiv.style.display = "block";
             commentForm.style.display = "none";
         }
     })
     commentButton.addEventListener('click', () => {
         if (commentForm.style.display === "block"){
-            parentDiv.style.gridTemplateRows = "20% 60% 20%";
+            parentDiv.style.gridTemplateRows = "50px 1fr 50px";
             commentDiv.style.display = "none";
             commentForm.style.display = "none";
         } else {
-            parentDiv.style.gridTemplateRows = "20% 40% 20% 20%";
+            parentDiv.style.gridTemplateRows = "50px 4fr 50px 1fr ";
             commentDiv.style.display = "none";
             commentForm.style.display = "block";
         }
@@ -142,9 +144,9 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
 
     commentButton.textContent = "Add Comment";
     showComments.innerText = 'Show Comments';
-    thumbButtonUp.innerText = `👍: ${reactions[0]['thumbsUp']}`;
-    thumbButtonDown.innerText = `👎: ${reactions[1]['thumbsDown']}`;
-    eyesButton.innerText = `👀: ${reactions[2]['eyes']}`;
+    thumbButtonUp.innerText = `👍 : ${reactions[0]['thumbsUp']}`;
+    thumbButtonDown.innerText = `👎 : ${reactions[1]['thumbsDown']}`;
+    eyesButton.innerText = `👀 : ${reactions[2]['eyes']}`;
     thumbButtonDown.setAttribute('id', "thumbButtonDown");
     thumbButtonUp.setAttribute('id', "thumbButtonUp");
     eyesButton.setAttribute('id' , "eyesButton");
@@ -226,3 +228,4 @@ function getJournals(position=0) {
 
 getJournals();
 initialise();
+

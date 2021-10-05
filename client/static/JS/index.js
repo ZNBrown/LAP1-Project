@@ -175,5 +175,3 @@ function getJournals(position=0) {
 
 getJournals();
 initialise();
-
-module.exports=(getJournals, renderPosts, handleComment, handleEmoji, initialise, refresh)

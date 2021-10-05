@@ -21,10 +21,15 @@ describe('testing default index.html', () => {
     })
     test('it has a h1', () => {
         let header = document.querySelector('h1');
-        expect(header.textContent).toContain('Large');
+        expect(header.textContent).toBeDefined;
     })
     test('it has a form', () => {
         let form = document.querySelector('form');
-        expect(form.innerHTML).toBeDefined;
+        expect(form).toBeDefined;
+    })
+    test('body has a dynamic section for posts', ()=> {
+        let dynamic = document.getElementById('dynamic');
+        expect(dynamic).toBeDefined;        
+
     })
 })

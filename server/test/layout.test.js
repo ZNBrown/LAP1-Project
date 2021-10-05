@@ -19,12 +19,12 @@ describe('testing default index.html', () => {
         let title = document.querySelector('title');
         expect(title.textContent).toContain('Large');
     })
-    test('it has a header', () => {
-        let title = document.querySelector('title');
-        expect(title.textContent).toContain('Large');
+    test('it has a h1', () => {
+        let header = document.querySelector('h1');
+        expect(header.textContent).toContain('Large');
     })
     test('it has a form', () => {
-        let title = document.querySelector('title');
-        expect(title.textContent).toContain('Large');
+        let form = document.querySelector('form');
+        expect(form.innerHTML).toBeDefined;
     })
 })

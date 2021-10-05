@@ -16,6 +16,7 @@
   },
   "scripts": {
     "test": "jest --watch",
+    "testq": "jest --silent --watch",
     "start": "node server.js",
     "dev": "nodemon index.js"
   },

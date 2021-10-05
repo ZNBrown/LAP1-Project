@@ -5,16 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="./static/JS/index.js" defer></script>
+    <link rel="stylesheet" href="static/CSS/style.css">
     <title>Large</title>
     <link rel="stylesheet" href="./static/CSS/style.css">
 </head>
 <body>
+    <header>
+        <div id="header">
+             
     
-    <button id="newJournal">New Journal
-    </button>
+
+            <button id="newJournal">Add<br> New<br> Post
+            </button>
+
+            <h1>BLOG</h1>
+        </div>
+    </header>
+
+    <button id="newJournal">New Journal</button>
     <form id="newJournalForm">
         <input id="newJournalTitle" type='text'>
-        <textarea id='newJournalBody' type='text' maxlength="256"></textarea>
+        <textarea name="" rows="10" id='newJournalBody' type='text' maxlength="256" placeholder="Type your post in here"></textarea>
         <input type='submit' id="newJournal" value='Submit'>
         <input type="text" id="searchGif" placeholder="Search for GIF">
         <input type="submit"  id="gifButton" value="Search GIF">

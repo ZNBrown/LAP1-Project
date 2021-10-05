@@ -25,6 +25,7 @@ function initialise() {
     newJournalForm.addEventListener('submit', async (e)=> {
         e.preventDefault();
         console.log(e);
+
         submitterID = e.submitter.id;
         if (submitterID === "newJournal"){
             let title = e.target.newJournalTitle.value;
@@ -59,9 +60,6 @@ function initialise() {
 
         }
     })
-
-    
-   
 }
 
 async function handleEmoji(e) {
@@ -87,6 +85,7 @@ async function handleComment(e){
     let commentData = e.target[0].value;
     let data = { articleID : articleID, commentData : commentData};
     console.log(data)
+    console.log(JSON.stringify(data))
     await fetch("http://localhost:3000/comment", {method: "POST", 
     body: JSON.stringify({data}),
     headers : {"Content-Type" : "application/json" }})
@@ -187,6 +186,7 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
         commentToWrite.innerText = comment;
         commentDiv.append(commentToWrite);
     }
+
 
     reactForm.append(thumbButtonUp, thumbButtonDown, eyesButton, articleID2);
     commentForm.append(commentBody, articleID, submitComment);

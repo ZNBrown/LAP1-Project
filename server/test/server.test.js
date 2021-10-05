@@ -4,16 +4,27 @@ const journals = require('../journals.json')
 const testDB = require('../backup.json')
 const express = require('express');
 const fs = require('fs');
-let originalJournals = journals;
+const path = require('path');
+const journalBackup = journals;
 
-function cleanDatabase(){
-    fs.writeFile('/Users/zachbrown/Documents/Futureproof/LAP1/project/LAP1-Project/server/journals.json', JSON.stringify(testDB), (error)=> {
+console.log(testDB)
+cleanDatabase()
+console.log(journals)
+
+
+async function cleanDatabase(){
+    await fs.writeFile(path.join(__dirname, '..', 'journals.json'), JSON.stringify(testDB), (error)=> {
         if (error) throw error ; console.log("DB changed to testDB")
     })
 }
 
+async function restoreDB(done){
+    await fs.writeFile(path.resolve('../', 'journals.json') , JSON.stringify(journalBackup), (error)=> {
+        if (error) throw error ; console.log("DB changed back to live")
+    })
+}
 
-describe("test", () => {
+describe("Naive tests for api response", () => {
     let app;
     let testComment = { "data" : { "articleID": 0, "commentData" : "this is a test comment" } }
     let testReact =  { "data" : { "articleID": 0, "submitterID" : "thumbButtonUp" } }
@@ -21,24 +32,21 @@ describe("test", () => {
 
     
     beforeAll(()=> {
-        cleanDatabase();
         app = server.listen(3001, ()=> console.log("test serv started"))
     })
 
-    afterAll(done =>{
-        fs.writeFile('/Users/zachbrown/Documents/Futureproof/LAP1/project/LAP1-Project/server/journals.json', JSON.stringify(originalJournals), (error)=> {
-            if (error) throw error ; console.log("DB changed to testDB")
-        })
+    afterAll( (done)=>{
+        restoreDB(done)
         app.close(done)
     })
 
-    // beforeEach(()=>{
-    //     cleanDatabase();
-    // })
+    beforeEach(()=>{
+        cleanDatabase();
+    })
 
-    // afterEach(()=>{
-    //     cleanDatabase();
-    // })
+    afterEach(()=>{
+        cleanDatabase();
+    })
 
     it("adds a new article", done => {
         request(app)

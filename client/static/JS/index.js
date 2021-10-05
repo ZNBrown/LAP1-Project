@@ -24,8 +24,6 @@ function initialise() {
     })
     newJournalForm.addEventListener('submit', async (e)=> {
         e.preventDefault();
-        console.log(e);
-
         submitterID = e.submitter.id;
         if (submitterID === "newJournal"){
             let title = e.target.newJournalTitle.value;

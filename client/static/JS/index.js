@@ -113,18 +113,35 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     let articleID2 = document.createElement('input');
     let submitComment = document.createElement('input');
     let gifContainer = document.createElement('img');
-
+    let divider = document.createElement('hr');
 
     showComments.addEventListener('click', () => {
-        commentDiv.style.display = "block";
+        if (commentDiv.style.display === "block"){
+            parentDiv.style.gridTemplateRows = "20% 60% 20%";
+            commentDiv.style.display = "none";
+            commentForm.style.display = "none";
+        } else {
+            parentDiv.style.gridTemplateRows = "20% 40% 20% 20%";
+            commentDiv.style.display = "block";
+            commentForm.style.display = "none";
+        }
     })
     commentButton.addEventListener('click', () => {
-        commentForm.style.display = "block";
+        if (commentForm.style.display === "block"){
+            parentDiv.style.gridTemplateRows = "20% 60% 20%";
+            commentDiv.style.display = "none";
+            commentForm.style.display = "none";
+        } else {
+            parentDiv.style.gridTemplateRows = "20% 40% 20% 20%";
+            commentDiv.style.display = "none";
+            commentForm.style.display = "block";
+        }
     })
     reactForm.addEventListener('submit', handleEmoji);
     commentForm.addEventListener('submit', handleComment);
 
-
+    commentButton.textContent = "Add Comment";
+    showComments.innerText = 'Show Comments';
     thumbButtonUp.innerText = `👍: ${reactions[0]['thumbsUp']}`;
     thumbButtonDown.innerText = `👎: ${reactions[1]['thumbsDown']}`;
     eyesButton.innerText = `👀: ${reactions[2]['eyes']}`;
@@ -143,7 +160,8 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     articleID.type = 'hidden';
     articleID2.type = 'hidden';
     submitComment.type = 'submit';
-    submitComment.value = 'Submit Comment'
+    submitComment.value = 'Submit Comment';
+   
 
     parentDiv.setAttribute("class", "parentDiv");
     blogContent.setAttribute("class", "blogContent");
@@ -156,19 +174,21 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     articleID.setAttribute("class", "articleID");
     articleID2.setAttribute("class", "articleID");
     submitComment.setAttribute("class", "submitComment");
-    gifContainer.setAttribute("class", "gifContainer")
+    gifContainer.setAttribute("class", "gifContainer");
+    commentDiv.setAttribute("class","commentDiv");
+    
 
-    commentButton.textContent = "Comment";
-
+    commentDiv.append(divider);
     for (const comment of comments) {
         let commentToWrite = document.createElement('p');
+        commentToWrite.setAttribute("class","comment")
         commentToWrite.innerText = comment;
         commentDiv.append(commentToWrite);
     }
 
     reactForm.append(thumbButtonUp, thumbButtonDown, eyesButton, articleID2);
     commentForm.append(commentBody, articleID, submitComment);
-    buttonParent.append(reactForm, commentButton);
+    buttonParent.append(reactForm, commentButton, showComments);
     parentDiv.append(blogTitle, gifContainer, blogContent, buttonParent, commentForm, commentDiv);
     document.querySelector('#dynamic').prepend(parentDiv);
 
@@ -180,6 +200,7 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     if (gifUrl === undefined || gifUrl === ''){
         gifUrl = '';
         gifContainer.style.display = 'none'
+        parentDiv.style.gridTemplateColumns = "100%"
     }
     gifContainer.src = gifUrl;
     window.scroll(0, position);

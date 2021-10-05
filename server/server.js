@@ -7,6 +7,7 @@ const fetch = require('node-fetch');
 const journals = require('./journals.json')
 const fs = require('fs');
 const { info, count } = require('console');
+const { request } = require('express');
 // CORS HEADERS::
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*")
@@ -23,11 +24,12 @@ app.get('/', (req, res) => {
 
 //get all articles
 app.get('/getall', (req, res) => {
-    res.json(journals)
+    res.json(journals).status(200);
 })
 
 //put comment to certain article
 app.post('/comment', (req, res)=>{
+    console.log(req.body);
     articleID = req.body.data.articleID;
     journalToComment = journals.articles[articleID];
     commentData = req.body.data.commentData;
@@ -35,7 +37,7 @@ app.post('/comment', (req, res)=>{
     fs.writeFile('./journals.json', JSON.stringify(journals), (error)=> {
         if (error) throw error ; console.log("File saved")
     })
-    res.json({"message": "even better ! : )"}).status(200);
+    res.status(201).json({"message": "Comment appended successfully"});
 })
 //put emoji to certain article
 app.post('/react', (req, res)=> {
@@ -65,7 +67,7 @@ app.post('/react', (req, res)=> {
     fs.writeFile('./journals.json', JSON.stringify(journals), (error)=> {
         if (error) throw error ; console.log("File saved")
     })
-    res.json({"message": "all good! : )"}).status(200);
+    res.status(201).json({"message": "all good! : )"}).status(201);
 })
 
 //add new article
@@ -86,7 +88,7 @@ app.post('/article', (req, res) => {
     fs.writeFile('./journals.json', JSON.stringify(journals), (error)=> {
         if (error) throw error ; console.log("File saved")
     })
-    res.json({"message": "all Asasdbsa! : )"}).status(200);
+    res.status(201).json({"message": "Article submitted"});
 
 })
 

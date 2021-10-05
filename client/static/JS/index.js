@@ -59,6 +59,7 @@ async function handleComment(e){
     let commentData = e.target[0].value;
     let data = { articleID : articleID, commentData : commentData}
     console.log(data)
+    console.log(JSON.stringify(data))
     await fetch("http://localhost:3000/comment", {method: "POST", 
     body: JSON.stringify({data}),
     headers : {"Content-Type" : "application/json" }})
@@ -134,7 +135,7 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
 
     reactForm.append(thumbButtonUp, thumbButtonDown, eyesButton, articleID2)
     commentForm.append(commentBody, articleID, submitComment)
-    buttonParent.append(reactForm, commentButton)
+    buttonParent.append(reactForm, commentButton, showComments)
     parentDiv.append(blogTitle, blogContent, buttonParent, commentForm, commentDiv)
     document.querySelector('#dynamic').append(parentDiv);
 

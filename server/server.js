@@ -6,7 +6,7 @@ app.use(express.json())
 const fetch = require('node-fetch');
 const journals = require('./journals.json')
 const fs = require('fs');
-const { info } = require('console');
+const { info, count } = require('console');
 // CORS HEADERS::
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*")
@@ -21,18 +21,55 @@ app.get('/', (req, res) => {
     res.json(journals.articles[0])
 })
 
+//get all articles
 app.get('/getall', (req, res) => {
     res.json(journals)
 })
-//get all articles
 
 //put comment to certain article
-
+app.post('/comment', (req, res)=>{
+    articleID = req.body.data.articleID;
+    journalToComment = journals.articles[articleID];
+    commentData = req.body.data.commentData;
+    journalToComment.comments.push(commentData);
+    fs.writeFile('./journals.json', JSON.stringify(journals), (error)=> {
+        if (error) throw error ; console.log("File saved")
+    })
+    res.json({"message": "even better ! : )"}).status(200);
+})
 //put emoji to certain article
+app.post('/react', (req, res)=> {
+    articleID = req.body.data.articleID;
+    journalToReact = journals.articles[articleID]
+    submitterID = req.body.data.submitterID;
+    let counter;
+    console.log(articleID);
+    console.log(submitterID);
+    switch(submitterID){
+        case 'thumbButtonUp':
+            counter = parseInt(journalToReact.reactions[0].thumbsUp)
+            counter++;
+            journalToReact.reactions[0].thumbsUp = counter;
+            break;
+        case 'thumbButtonDown':
+            counter = parseInt(journalToReact.reactions[1].thumbsDown)
+            counter++;
+            journalToReact.reactions[1].thumbsDown = counter;
+            break;
+        case 'eyesButton':
+            counter = parseInt(journalToReact.reactions[2].eyes)
+            counter++;
+            journalToReact.reactions[2].eyes = counter;
+            break;
+    }
+    fs.writeFile('./journals.json', JSON.stringify(journals), (error)=> {
+        if (error) throw error ; console.log("File saved")
+    })
+    res.json({"message": "all good! : )"}).status(200);
+})
 
 //add new article
 app.post('/article', (req, res) => {
-    console.log(req);
     let info = req.body.data
     let articleId = journals.articles.length
     console.log(req.body);
@@ -43,16 +80,14 @@ app.post('/article', (req, res) => {
         "body" : info.content,
         "date" : date,
         "comments" : [],
-        "reactions" : []
+        "reactions" : [{"thumbsUp" : 0}, {"thumbsDown" : 0}, {"eyes" : 0}]
     }
-    console.log(newArticle);
-    // data = fs.read('./journals.json')
-    // let parseHelper = JSON.parse(data)
     journals.articles.push(newArticle);
-    //dataToPush =  JSON.stringify(parseHelper)
     fs.writeFile('./journals.json', JSON.stringify(journals), (error)=> {
         if (error) throw error ; console.log("File saved")
     })
+    res.json({"message": "all Asasdbsa! : )"}).status(200);
+
 })
 
 module.exports=(app);

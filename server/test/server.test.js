@@ -1,8 +1,16 @@
 const request = require("supertest")
 const server = require("../server")
 const journals = require('../journals.json')
+const testDB = require('../backup.json')
 const express = require('express');
+const fs = require('fs');
+let originalJournals = journals;
 
+function cleanDatabase(){
+    fs.writeFile('/Users/zachbrown/Documents/Futureproof/LAP1/project/LAP1-Project/server/journals.json', JSON.stringify(testDB), (error)=> {
+        if (error) throw error ; console.log("DB changed to testDB")
+    })
+}
 
 
 describe("test", () => {
@@ -13,12 +21,33 @@ describe("test", () => {
 
     
     beforeAll(()=> {
+        cleanDatabase();
         app = server.listen(3001, ()=> console.log("test serv started"))
     })
 
     afterAll(done =>{
-        console.log("server stopped testing")
+        fs.writeFile('/Users/zachbrown/Documents/Futureproof/LAP1/project/LAP1-Project/server/journals.json', JSON.stringify(originalJournals), (error)=> {
+            if (error) throw error ; console.log("DB changed to testDB")
+        })
         app.close(done)
+    })
+
+    // beforeEach(()=>{
+    //     cleanDatabase();
+    // })
+
+    // afterEach(()=>{
+    //     cleanDatabase();
+    // })
+
+    it("adds a new article", done => {
+        request(app)
+        .post("/article")
+        .send(testArticle)
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json; charset=utf-8')
+        .expect({"message" : "Article submitted"})
+        .expect(201, done);
     })
 
     it("reaches / ", done => {
@@ -59,14 +88,5 @@ describe("test", () => {
         .expect(201, done);
     })
 
-    it("adds a new article", done => {
-        request(app)
-        .post("/article")
-        .send(testArticle)
-        .set('Accept', 'application/json')
-        .set('Content-Type', 'application/json; charset=utf-8')
-        .expect({"message" : "Article submitted"})
-        .expect(201, done);
-    })
 
 })

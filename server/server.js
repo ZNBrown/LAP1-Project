@@ -29,7 +29,6 @@ app.get('/getall', (req, res) => {
 
 //put comment to certain article
 app.post('/comment', (req, res)=>{
-    console.log(req.body);
     articleID = req.body.data.articleID;
     journalToComment = journals.articles[articleID];
     commentData = req.body.data.commentData;
@@ -45,8 +44,6 @@ app.post('/react', (req, res)=> {
     journalToReact = journals.articles[articleID]
     submitterID = req.body.data.submitterID;
     let counter;
-    console.log(articleID);
-    console.log(submitterID);
     switch(submitterID){
         case 'thumbButtonUp':
             counter = parseInt(journalToReact.reactions[0].thumbsUp)
@@ -74,7 +71,6 @@ app.post('/react', (req, res)=> {
 app.post('/article', (req, res) => {
     let info = req.body.data
     let articleId = journals.articles.length
-    console.log(req.body);
     let today = new Date();
     let date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
     let newArticle = { "articleID" : articleId,

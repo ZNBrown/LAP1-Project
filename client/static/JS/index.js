@@ -26,6 +26,7 @@ function initialise() {
         let content = e.target.newJournalBody.value;
         let data = { "title": title, "content": content};
         console.log(data);
+
         try {
         response = await fetch("http://localhost:3000/article", {method: "POST", 
         body: JSON.stringify({data}),
@@ -37,7 +38,6 @@ function initialise() {
         document.querySelector('#newJournalBody').value = ""; 
         document.querySelector('#newJournalForm').style.display = 'none';
     })
-   
 }
 
 async function handleEmoji(e) {
@@ -63,6 +63,7 @@ async function handleComment(e){
     let commentData = e.target[0].value;
     let data = { articleID : articleID, commentData : commentData};
     console.log(data)
+    console.log(JSON.stringify(data))
     await fetch("http://localhost:3000/comment", {method: "POST", 
     body: JSON.stringify({data}),
     headers : {"Content-Type" : "application/json" }})
@@ -140,6 +141,7 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
         commentToWrite.innerText = comment;
         commentDiv.append(commentToWrite);
     }
+
 
     reactForm.append(thumbButtonUp, thumbButtonDown, eyesButton, articleID2);
     commentForm.append(commentBody, articleID, submitComment);

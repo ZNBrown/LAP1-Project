@@ -6,7 +6,9 @@ app.use(express.json())
 const fetch = require('node-fetch');
 const journals = require('./journals.json')
 const fs = require('fs');
-const { info, count } = require('console');
+const APIkey = 'VUq7xxD1xM1rS9w2Typt9A6VC7soZwLY';
+
+
 // CORS HEADERS::
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*")
@@ -80,7 +82,8 @@ app.post('/article', (req, res) => {
         "body" : info.content,
         "date" : date,
         "comments" : [],
-        "reactions" : [{"thumbsUp" : 0}, {"thumbsDown" : 0}, {"eyes" : 0}]
+        "reactions" : [{"thumbsUp" : 0}, {"thumbsDown" : 0}, {"eyes" : 0}],
+        "gifUrl" : info.gifUrl
     }
     journals.articles.push(newArticle);
     fs.writeFile('./journals.json', JSON.stringify(journals), (error)=> {

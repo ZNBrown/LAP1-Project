@@ -16,11 +16,18 @@ function refresh(){
 }
 
 function initialise() {
-    let newJournalButton = document.getElementById('newJournal');
+    let newJournalButton = document.getElementById('newJournalButton');
     let newJournalForm = document.getElementById('newJournalForm');
     let gifButton = document.getElementById('gifButton');
+
+
     newJournalButton.addEventListener('click', ()=> {
-        newJournalForm.style.display = 'block'
+        if(newJournalForm.style.display === 'grid'){
+            newJournalForm.style.display = 'none'
+        } else {
+            newJournalForm.style.display = 'grid'
+        }
+        
     })
     newJournalForm.addEventListener('submit', async (e)=> {
         e.preventDefault();
@@ -49,12 +56,24 @@ function initialise() {
             try {
                 searchterm = e.target.searchGif.value;
                 console.log(searchterm);
-                let response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=VUq7xxD1xM1rS9w2Typt9A6VC7soZwLY&q=${searchterm}&limit=1&offset=0&rating=r&lang=en`)
+                let response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=VUq7xxD1xM1rS9w2Typt9A6VC7soZwLY&q=${searchterm}&limit=6&offset=0&rating=r&lang=en`)
                 let data = await response.json()
                 console.log(data.data[0])
-                let gifUrl = data.data[0]['images']['original']['url'];
-                document.querySelector('#gifDisplay').innerHTML = `<img src="${gifUrl}"></img>`
-                document.querySelector('#gifLink').value = gifUrl;
+                for(let a = 0; a<6;a++){
+                    let gifUrl = data.data[a]['images']['original']['url'];
+                    let gif = document.createElement('img');
+                    gif.src = `${gifUrl}`;
+                    gif.setAttribute("class","gif");
+                    document.querySelector('#gifDisplay').append(gif);
+                    // gifLink = document.createElement('input');
+                    // gifLink.type = "hidden";
+                    // gifLink.id = `gifLink${a}`
+                    gif.addEventListener('click', () => {
+                        document.querySelector('#gifLink').value = gifUrl;
+                        gif.style.border = "2px solid blue";
+                        setTimeout(() => { gif.style.border = "0px"}, 500)
+                    })
+                }
             
             } catch (err) {console.warn(err)}
 

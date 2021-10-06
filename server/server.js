@@ -64,6 +64,8 @@ app.post('/react', (req, res)=> {
             journalToReact.reactions[2].eyes = counter;
             break;
     }
+    let weight = calcWeighting(articleID);
+    journalToReact.weighting = weight;
     fs.writeFile('./journals.json', JSON.stringify(journals), (error)=> {
         if (error) throw error ; console.log("File saved")
     })
@@ -76,6 +78,7 @@ app.post('/article', (req, res) => {
     let articleId = journals.articles.length
     let today = new Date();
     console.log(today);
+    let weight = calcWeighting(articleId)
     // let date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear() + " - " + today.getHours() + ":" + today.getMinutes() +":"+ today.getSeconds();
     let newArticle = { "articleID" : articleId,
         "title" : info.title,
@@ -83,7 +86,8 @@ app.post('/article', (req, res) => {
         "date" : today,
         "comments" : [],
         "reactions" : [{"thumbsUp" : 0}, {"thumbsDown" : 0}, {"eyes" : 0}],
-        "gifUrl" : info.gifUrl
+        "gifUrl" : info.gifUrl,
+        "weighting":weight
     }
     journals.articles.push(newArticle);
     fs.writeFile('./journals.json', JSON.stringify(journals), (error)=> {
@@ -92,5 +96,22 @@ app.post('/article', (req, res) => {
     res.status(201).json({"message": "Article submitted"});
 
 })
+
+function calcWeighting(articleID){
+    let reactStats = journals.articles[articleID]['reactions'];
+    let thumbsUp = reactStats[0]["thumbsUp"];
+    let thumbsDown = reactStats[1]["thumbsDown"];
+    let eyes = reactStats[2]['eyes'];
+    if (thumbsUp === 0 && thumbsDown === 0 && eyes === 0){
+        weighting = 5;
+        console.log(weighting);
+        return weighting
+    } else {
+        weighting = thumbsUp + 2*eyes - thumbsDown;
+        console.log(weighting);
+    }   return weighting;
+    
+
+}
 
 module.exports=(app);

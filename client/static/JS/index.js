@@ -135,6 +135,19 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     let gifContainer = document.createElement('img');
     let divider = document.createElement('hr');
     let dateTime = document.createElement("p");
+    let reactShowButton = document.createElement('button');
+
+    reactShowButton.addEventListener('click', () => {
+        if (commentButton.style.display === "none"){
+            commentButton.style.display = "block";
+            showComments.style.display = "block";
+            reactForm.style.display = "none";
+        } else {
+            commentButton.style.display = "none";
+            showComments.style.display = 'none';
+            reactForm.style.display = "block";
+        }
+    })
 
     showComments.addEventListener('click', () => {
         if (commentDiv.style.display === "block"){
@@ -174,7 +187,7 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     articleID.setAttribute('id',"articleID" );
     articleID2.setAttribute('id',"articleID2" );
     commentBody.setAttribute('maxlength', "256");
-
+    
 
     thumbButtonDown.type = 'submit';
     thumbButtonUp.type = 'submit';
@@ -184,7 +197,7 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     articleID2.type = 'hidden';
     submitComment.type = 'submit';
     submitComment.value = 'Submit Comment';
-   
+   reactShowButton.textContent = "React"
 
     parentDiv.setAttribute("class", "parentDiv");
     blogContent.setAttribute("class", "blogContent");
@@ -199,7 +212,9 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     submitComment.setAttribute("class", "submitComment");
     gifContainer.setAttribute("class", "gifContainer");
     commentDiv.setAttribute("class","commentDiv");
-    dateTime.setAttribute("class", "dateTime")
+    dateTime.setAttribute("class", "dateTime");
+    showComments.setAttribute("class","showComments");
+    reactShowButton.setAttribute("class","reactShowButton");
 
     commentDiv.append(divider);
     for (const comment of comments) {
@@ -212,9 +227,9 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
 
     reactForm.append(thumbButtonUp, thumbButtonDown, eyesButton, articleID2);
     commentForm.append(commentBody, articleID, submitComment);
-    buttonParent.append(reactForm, commentButton, showComments);
+    buttonParent.append(reactShowButton, reactForm, commentButton, showComments);
     parentDiv.append(blogTitle, dateTime, gifContainer, blogContent, buttonParent, commentForm, commentDiv);
-    document.querySelector('#dynamic').prepend(parentDiv);
+    document.querySelector('#dynamic').append(parentDiv);
 
     blogTitle.textContent = title;
     blogContent.textContent = body;
@@ -222,7 +237,6 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     articleID2.value = articleIDToPass;
 
     dateTime.textContent = timeSince(date);
-    console.log(typeof(date))
     if (gifUrl === undefined || gifUrl === ''){
         gifUrl = '';
         gifContainer.style.display = 'none'
@@ -236,7 +250,6 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
 
 function timeSince(date){
     postDate = Date.parse(date);
-    console.log(postDate);
     now = new Date();
     secondsSince = Math.floor((now-postDate)/1000);
 
@@ -271,14 +284,26 @@ function getJournals(position=0) {
     fetch("http://localhost:3000/getall")
     .then(res=>res.json()).then(data => {
         let journalNum = data.articles.length;
+        let articles = data.articles;
+        function compare(a,b){
+            if (a.weighting < b.weighting){
+                return 1;
+            } else if (a.weighting > b.weighting){
+                return -1;
+            } else {
+                return 0;
+            }
+        };
+        articles.sort( compare );
+        console.log(articles);
         for (let index = 0; index < journalNum; index++) {
-            let title = data.articles[index]['title'];
-            let body = data.articles[index]['body'];
-            let comments = data.articles[index]['comments'];
-            let reactions = data.articles[index]['reactions'];
-            let date = data.articles[index]['date'];
-            let articleIDToPass = data.articles[index]['articleID'];
-            let gifLink = data.articles[index]['gifUrl']
+            let title = articles[index]['title'];
+            let body = articles[index]['body'];
+            let comments = articles[index]['comments'];
+            let reactions = articles[index]['reactions'];
+            let date = articles[index]['date'];
+            let articleIDToPass = articles[index]['articleID'];
+            let gifLink = articles[index]['gifUrl']
             renderPosts(articleIDToPass, title, body, date, comments, reactions, position, gifLink);
         }
     })

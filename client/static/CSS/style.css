@@ -176,9 +176,17 @@ header{
 
 .blogTitle{
     grid-row-start: 1;
+    grid-column-start: 1;
     margin: 50px;
     text-align: center;
     display: block;
+}
+
+.dateTime{
+    grid-row-start: 1;
+    grid-column-start: 1;
+    justify-self: end;
+
 }
 
 .blogContent{

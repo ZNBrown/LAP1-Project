@@ -135,6 +135,19 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     let gifContainer = document.createElement('img');
     let divider = document.createElement('hr');
     let dateTime = document.createElement("p");
+    let reactShowButton = document.createElement('button');
+
+    reactShowButton.addEventListener('click', () => {
+        if (commentButton.style.display === "none"){
+            commentButton.style.display = "block";
+            showComments.style.display = "block";
+            reactForm.style.display = "none";
+        } else {
+            commentButton.style.display = "none";
+            showComments.style.display = 'none';
+            reactForm.style.display = "block";
+        }
+    })
 
     showComments.addEventListener('click', () => {
         if (commentDiv.style.display === "block"){
@@ -174,7 +187,7 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     articleID.setAttribute('id',"articleID" );
     articleID2.setAttribute('id',"articleID2" );
     commentBody.setAttribute('maxlength', "256");
-
+    
 
     thumbButtonDown.type = 'submit';
     thumbButtonUp.type = 'submit';
@@ -184,7 +197,7 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     articleID2.type = 'hidden';
     submitComment.type = 'submit';
     submitComment.value = 'Submit Comment';
-   
+   reactShowButton.textContent = "React"
 
     parentDiv.setAttribute("class", "parentDiv");
     blogContent.setAttribute("class", "blogContent");
@@ -199,7 +212,9 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     submitComment.setAttribute("class", "submitComment");
     gifContainer.setAttribute("class", "gifContainer");
     commentDiv.setAttribute("class","commentDiv");
-    dateTime.setAttribute("class", "dateTime")
+    dateTime.setAttribute("class", "dateTime");
+    showComments.setAttribute("class","showComments");
+    reactShowButton.setAttribute("class","reactShowButton");
 
     commentDiv.append(divider);
     for (const comment of comments) {
@@ -212,7 +227,7 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
 
     reactForm.append(thumbButtonUp, thumbButtonDown, eyesButton, articleID2);
     commentForm.append(commentBody, articleID, submitComment);
-    buttonParent.append(reactForm, commentButton, showComments);
+    buttonParent.append(reactShowButton, reactForm, commentButton, showComments);
     parentDiv.append(blogTitle, dateTime, gifContainer, blogContent, buttonParent, commentForm, commentDiv);
     document.querySelector('#dynamic').append(parentDiv);
 

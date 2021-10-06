@@ -15,11 +15,12 @@ const html = fs.readFileSync(path.resolve(__dirname, '..', '..', './client', './
 
 
 
-describe('tests form to add new posts', () => {
+describe('tests interactive elements', () => {
 
     beforeAll(() => {
         document.documentElement.innerHTML = html.toString();
     })
+
 
     // test('Check if blog form capable of adding new entry', ()=>{
     //     fetch = jest.fn(() => Promise.resolve({
@@ -55,6 +56,27 @@ describe('tests form to add new posts', () => {
             //console.log(`inside of fetch${document.documentElement.innerHTML}`)
             const content = document.getElementById('dynamic')
             //console.log(content.firstChild.innerHTML)
+            expect(content.firstChild.innerHTML).toBe(`<h2 class="blogTitle">Stabby Dog</h2><img class="gifContainer" src="https://media3.giphy.com/media/iDJQRjTCenF7A4BRyU/giphy.gif?cid=ab93a719zj9j2p00dtl4wepbfm5y97p789n4ud2wetss4tri&amp;rid=giphy.gif&amp;ct=g"><p class="blogContent">Here is a stabby dog</p><div class="buttonParent"><form class="reactForm"><button id="thumbButtonUp" type="submit"></button><button id="thumbButtonDown" type="submit"></button><button id="eyesButton" type="submit"></button><input id="articleID2" type="hidden" class="articleID" value="0"></form><button class="commentButton">Add Comment</button><button></button></div><form class="commentForm"><input maxlength="256" type="text" class="commentBody"><input id="articleID" type="hidden" class="articleID" value="0"><input type="submit" value="Submit Comment" class="submitComment"></form><div class="commentDiv"><hr><p class="comment"></p></div>`)
+        })
+    })
+
+    test('Check if we can react to the first post', ()=>{
+        fetch = jest.fn(() => Promise.resolve({
+            json: () => Promise.resolve(backup),
+        }));
+        window.scroll = jest.fn();
+        require('../../client/static/JS/index');
+        fetch()
+        .then(res=>res.json()).then(() => {
+            //spoofs the fetch
+            //probably bad form but by the time this is loaded we know the actual page has loaded
+            //console.log(`inside of fetch${document.documentElement.innerHTML}`)
+            const content = document.getElementById('dynamic')
+            const parent = content.firstChild
+            console.log(parent.innerHTML);
+            //const button = form.getElementById('thumbButtonUp')
+            //button.click();
+            //form.dispatchEvent(new Event('submit'));
             expect(content.firstChild.innerHTML).toBe(`<h2 class="blogTitle">Stabby Dog</h2><img class="gifContainer" src="https://media3.giphy.com/media/iDJQRjTCenF7A4BRyU/giphy.gif?cid=ab93a719zj9j2p00dtl4wepbfm5y97p789n4ud2wetss4tri&amp;rid=giphy.gif&amp;ct=g"><p class="blogContent">Here is a stabby dog</p><div class="buttonParent"><form class="reactForm"><button id="thumbButtonUp" type="submit"></button><button id="thumbButtonDown" type="submit"></button><button id="eyesButton" type="submit"></button><input id="articleID2" type="hidden" class="articleID" value="0"></form><button class="commentButton">Add Comment</button><button></button></div><form class="commentForm"><input maxlength="256" type="text" class="commentBody"><input id="articleID" type="hidden" class="articleID" value="0"><input type="submit" value="Submit Comment" class="submitComment"></form><div class="commentDiv"><hr><p class="comment"></p></div>`)
         })
     })

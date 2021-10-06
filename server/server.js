@@ -75,11 +75,12 @@ app.post('/article', (req, res) => {
     let info = req.body.data
     let articleId = journals.articles.length
     let today = new Date();
-    let date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+    console.log(today);
+    // let date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear() + " - " + today.getHours() + ":" + today.getMinutes() +":"+ today.getSeconds();
     let newArticle = { "articleID" : articleId,
         "title" : info.title,
         "body" : info.content,
-        "date" : date,
+        "date" : today,
         "comments" : [],
         "reactions" : [{"thumbsUp" : 0}, {"thumbsDown" : 0}, {"eyes" : 0}],
         "gifUrl" : info.gifUrl

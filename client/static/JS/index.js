@@ -1,3 +1,5 @@
+
+
 const APIkey = 'VUq7xxD1xM1rS9w2Typt9A6VC7soZwLY';
 
 
@@ -12,11 +14,18 @@ function refresh(){
 }
 
 function initialise() {
-    let newJournalButton = document.getElementById('newJournal');
+    let newJournalButton = document.getElementById('newJournalButton');
     let newJournalForm = document.getElementById('newJournalForm');
-    let gifButton = document.getElementById('gifButton');
+
+
+
     newJournalButton.addEventListener('click', ()=> {
-        newJournalForm.style.display = 'block'
+        if(newJournalForm.style.display === 'grid'){
+            newJournalForm.style.display = 'none'
+        } else {
+            newJournalForm.style.display = 'grid'
+        }
+        
     })
     newJournalForm.addEventListener('submit', async (e)=> {
         e.preventDefault();
@@ -43,12 +52,24 @@ function initialise() {
             try {
                 searchterm = e.target.searchGif.value;
                 console.log(searchterm);
-                let response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=VUq7xxD1xM1rS9w2Typt9A6VC7soZwLY&q=${searchterm}&limit=1&offset=0&rating=r&lang=en`)
+                let response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=VUq7xxD1xM1rS9w2Typt9A6VC7soZwLY&q=${searchterm}&limit=6&offset=0&rating=r&lang=en`)
                 let data = await response.json()
                 console.log(data.data[0])
-                let gifUrl = data.data[0]['images']['original']['url'];
-                document.querySelector('#gifDisplay').innerHTML = `<img src="${gifUrl}"></img>`
-                document.querySelector('#gifLink').value = gifUrl;
+                for(let a = 0; a<6;a++){
+                    let gifUrl = data.data[a]['images']['original']['url'];
+                    let gif = document.createElement('img');
+                    gif.src = `${gifUrl}`;
+                    gif.setAttribute("class","gif");
+                    document.querySelector('#gifDisplay').append(gif);
+                    // gifLink = document.createElement('input');
+                    // gifLink.type = "hidden";
+                    // gifLink.id = `gifLink${a}`
+                    gif.addEventListener('click', () => {
+                        document.querySelector('#gifLink').value = gifUrl;
+                        gif.style.border = "2px solid blue";
+                        setTimeout(() => { gif.style.border = "0px"}, 500)
+                    })
+                }
             
             } catch (err) {console.warn(err)}
 
@@ -107,6 +128,7 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     let submitComment = document.createElement('input');
     let gifContainer = document.createElement('img');
     let divider = document.createElement('hr');
+    let dateTime = document.createElement("p");
 
     showComments.addEventListener('click', () => {
         if (commentDiv.style.display === "block"){
@@ -171,7 +193,7 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     submitComment.setAttribute("class", "submitComment");
     gifContainer.setAttribute("class", "gifContainer");
     commentDiv.setAttribute("class","commentDiv");
-    
+    dateTime.setAttribute("class", "dateTime")
 
     commentDiv.append(divider);
     for (const comment of comments) {
@@ -185,14 +207,16 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     reactForm.append(thumbButtonUp, thumbButtonDown, eyesButton, articleID2);
     commentForm.append(commentBody, articleID, submitComment);
     buttonParent.append(reactForm, commentButton, showComments);
-    parentDiv.append(blogTitle, gifContainer, blogContent, buttonParent, commentForm, commentDiv);
+    parentDiv.append(blogTitle, dateTime, gifContainer, blogContent, buttonParent, commentForm, commentDiv);
     document.querySelector('#dynamic').prepend(parentDiv);
 
     blogTitle.textContent = title;
     blogContent.textContent = body;
     articleID.value = articleIDToPass;
     articleID2.value = articleIDToPass;
-  
+
+    dateTime.textContent = timeSince(date);
+    console.log(typeof(date))
     if (gifUrl === undefined || gifUrl === ''){
         gifUrl = '';
         gifContainer.style.display = 'none'
@@ -203,6 +227,40 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
 
 }
 
+
+function timeSince(date){
+    postDate = Date.parse(date);
+    console.log(postDate);
+    now = new Date();
+    secondsSince = Math.floor((now-postDate)/1000);
+
+    let years = secondsSince /(60*60*24*365);
+    if (years > 1){
+        return `${Math.floor(years)} years ago`;
+    } else {
+        let months = secondsSince/(60*60*24*30);
+        if (months > 1){
+            return `${Math.floor(months)} months ago`;
+        } else {
+            let days = secondsSince/(60*60*24);
+            if (days > 1) {
+                return `${Math.floor(days)} days ago`;
+            } else {
+                let hours = secondsSince/(60*60);
+                if (hours >1){
+                    return `${Math.floor(hours)} hours ago`;
+                } else {
+                    let minutes = secondsSince/(60);
+                    if (minutes > 1) {
+                        return `${Math.floor(minutes)} minutes ago`;
+                    } else {
+                        return `${Math.floor(secondsSince)} seconds ago`;
+                    }
+                }
+            }
+        }
+    }
+}
 function getJournals(position=0) {
     fetch("http://localhost:3000/getall")
     .then(res=>res.json()).then(data => {

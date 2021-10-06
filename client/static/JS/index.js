@@ -1,3 +1,5 @@
+const { domainToASCII } = require("url");
+
 const APIkey = 'VUq7xxD1xM1rS9w2Typt9A6VC7soZwLY';
 
 function exampleFetch() {
@@ -132,6 +134,7 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     let submitComment = document.createElement('input');
     let gifContainer = document.createElement('img');
     let divider = document.createElement('hr');
+    let dateTime = document.createElement("p");
 
     showComments.addEventListener('click', () => {
         if (commentDiv.style.display === "block"){
@@ -196,7 +199,7 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     submitComment.setAttribute("class", "submitComment");
     gifContainer.setAttribute("class", "gifContainer");
     commentDiv.setAttribute("class","commentDiv");
-    
+    dateTime.setAttribute("class", "dateTime")
 
     commentDiv.append(divider);
     for (const comment of comments) {

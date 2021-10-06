@@ -43,6 +43,7 @@ app.post('/comment', (req, res)=>{
 })
 //put emoji to certain article
 app.post('/react', (req, res)=> {
+    console.log("reached server")
     articleID = req.body.data.articleID;
     journalToReact = journals.articles[articleID]
     submitterID = req.body.data.submitterID;
@@ -67,7 +68,7 @@ app.post('/react', (req, res)=> {
     fs.writeFile('./journals.json', JSON.stringify(journals), (error)=> {
         if (error) throw error ; console.log("File saved")
     })
-    res.status(201).json({"message": "all good! : )"}).status(201);
+    res.status(201).json({"message": "all good! : )"});
 })
 
 //add new article

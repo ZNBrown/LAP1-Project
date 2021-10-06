@@ -1,5 +1,3 @@
-
-
 const APIkey = 'VUq7xxD1xM1rS9w2Typt9A6VC7soZwLY';
 
 
@@ -82,16 +80,18 @@ async function handleEmoji(e) {
     let articleID = e.target.articleID2.value;
     let submitterID = e.submitter.id;
     let data = { articleID : articleID, submitterID : submitterID};
-    try{
-    response = await fetch("http://localhost:3000/react", {method: "POST", 
-    body: JSON.stringify({data}),
-    headers : {"Content-Type" : "application/json" }})
-
-
+    try {
+        const response = await fetch("http://localhost:3000/react", {method: "POST", 
+        body: JSON.stringify({data}),
+        headers : {"Content-Type" : "application/json" }})
+        const uniqueReturn = await response.json();
     }
-    catch(error) { console.warn(error) }
+    catch(error){
+        console.log(error)
+    }
     refresh();
 }
+
 
 async function handleComment(e){
     e.preventDefault();
@@ -109,7 +109,7 @@ async function handleComment(e){
 
 }
 
-function renderPosts(articleIDToPass, title, body, date, comments, reactions, position, gifUrl) {
+async function renderPosts(articleIDToPass, title, body, date, comments, reactions, position, gifUrl) {
     let parentDiv = document.createElement('div');
     let blogTitle = document.createElement('h2');
     let blogContent = document.createElement('p');
@@ -216,7 +216,6 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     articleID2.value = articleIDToPass;
 
     dateTime.textContent = timeSince(date);
-    console.log(typeof(date))
     if (gifUrl === undefined || gifUrl === ''){
         gifUrl = '';
         gifContainer.style.display = 'none'
@@ -230,7 +229,6 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
 
 function timeSince(date){
     postDate = Date.parse(date);
-    console.log(postDate);
     now = new Date();
     secondsSince = Math.floor((now-postDate)/1000);
 
@@ -261,22 +259,21 @@ function timeSince(date){
         }
     }
 }
-function getJournals(position=0) {
-    fetch("http://localhost:3000/getall")
-    .then(res=>res.json()).then(data => {
-        let journalNum = data.articles.length;
-        for (let index = 0; index < journalNum; index++) {
-            let title = data.articles[index]['title'];
-            let body = data.articles[index]['body'];
-            let comments = data.articles[index]['comments'];
-            let reactions = data.articles[index]['reactions'];
-            let date = data.articles[index]['date'];
-            let articleIDToPass = data.articles[index]['articleID'];
-            let gifLink = data.articles[index]['gifUrl']
-            renderPosts(articleIDToPass, title, body, date, comments, reactions, position, gifLink);
-        }
-    })
+async function getJournals(position=0) {
+    let response = await fetch("http://localhost:3000/getall")
+    let data = await response.json()
+    let journalNum = data.articles.length;
+    for (let index = 0; index < journalNum; index++) {
+        let title = data.articles[index]['title'];
+        let body = data.articles[index]['body'];
+        let comments = data.articles[index]['comments'];
+        let reactions = data.articles[index]['reactions'];
+        let date = data.articles[index]['date'];
+        let articleIDToPass = data.articles[index]['articleID'];
+        let gifLink = data.articles[index]['gifUrl']
+        renderPosts(articleIDToPass, title, body, date, comments, reactions, position, gifLink);
+    }
 }
 
-getJournals();
+getJournals().catch(e => {console.warn(`Error ${e} when rendering posts`)});
 initialise();

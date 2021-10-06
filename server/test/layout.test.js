@@ -1,8 +1,6 @@
 /**
  * @jest-environment jsdom
  */
-
-let helpers;
 const { expect} = require('@jest/globals');
 const fs = require('fs');
 const path = require('path');

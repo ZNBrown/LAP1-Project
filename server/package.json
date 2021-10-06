@@ -17,6 +17,7 @@
   "scripts": {
     "test": "jest --watch",
     "testq": "jest --silent --watch",
+    "testb": "jest --env=jsdom --watch ",
     "start": "node server.js",
     "dev": "nodemon index.js"
   },

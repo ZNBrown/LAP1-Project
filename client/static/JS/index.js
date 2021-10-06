@@ -1,9 +1,5 @@
 const APIkey = 'VUq7xxD1xM1rS9w2Typt9A6VC7soZwLY';
 
-function exampleFetch() {
-    fetch("http://localhost:3000/")
-    .then(res=>res.json()).then(data => (console.log(data)))
-}
 
 function refresh(){
 
@@ -92,7 +88,7 @@ async function handleComment(e){
 
 }
 
-function renderPosts(articleIDToPass, title, body, date, comments, reactions, position, gifUrl) {
+function renderPosts(articleIDToPass, title, body, date, comments, reactions, position=0, gifUrl) {
     let parentDiv = document.createElement('div');
     let blogTitle = document.createElement('h2');
     let blogContent = document.createElement('p');

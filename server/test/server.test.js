@@ -24,7 +24,7 @@ describe("Naive tests for api response", () => {
     let app;
     let testComment = { "data" : { "articleID": 0, "commentData" : "this is a test comment" } }
     let testReact =  { "data" : { "articleID": 0, "submitterID" : "thumbButtonUp" } }
-    let testArticle =  { "data" : { "title": "This is my test blog title", "content" : "This is my test content" } }
+    let testArticle =  { "data" : { "title": "This is my test blog title", "content" : "This is my test content", "gifUrl" : "example" } }
 
     
     beforeAll(()=> {

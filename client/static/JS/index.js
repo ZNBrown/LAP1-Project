@@ -88,7 +88,7 @@ async function handleComment(e){
 
 }
 
-function renderPosts(articleIDToPass, title, body, date, comments, reactions, position=0, gifUrl) {
+function renderPosts(articleIDToPass, title, body, date, comments, reactions, position, gifUrl) {
     let parentDiv = document.createElement('div');
     let blogTitle = document.createElement('h2');
     let blogContent = document.createElement('p');

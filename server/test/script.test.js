@@ -5,11 +5,12 @@
 let scriptFuncs;
 const request = require("supertest")
 const server = require("../server")
-const journals = require('../journals.json')
+const backup = require('../backup.json')
 const express = require('express');
 const { expect} = require('@jest/globals');
 const fs = require('fs');
 const path = require('path');
+const exp = require("constants");
 const html = fs.readFileSync(path.resolve(__dirname, '..', '..', './client', './index.html'))
 
 
@@ -17,39 +18,6 @@ const html = fs.readFileSync(path.resolve(__dirname, '..', '..', './client', './
 describe('tests form to add new posts', () => {
 
     beforeAll(() => {
-        //<head><script src="../../client/static/JS/index" defer></script></head>
-        //app = server.listen(3002, ()=> console.log("test serv for client started"))
-        /*
-        document.documentElement.innerHTML = `<body>
-        <header>
-            <div id="header">
-                 
-        
-    
-                <button id="newJournal">Add<br> New<br> Post
-                </button>
-    
-                <h1>BLOG</h1>
-            </div>
-        </header>
-    
-        <button id="newJournal">New Journal</button>
-        <form id="newJournalForm">
-            <input id="newJournalTitle" type='text'>
-            <textarea name="" rows="10" id='newJournalBody' type='text' maxlength="256" placeholder="Type your post in here"></textarea>
-            <input type='submit' id="newJournal" value='Submit'>
-            <input type="text" id="searchGif" placeholder="Search for GIF">
-            <input type="submit"  id="gifButton" value="Search GIF">
-            <input type="hidden" id="gifLink">
-            <div id="gifDisplay">
-    
-            </div>
-        </form>
-        <section id="dynamic">
-        </section>
-    </body>`;
-        body = document.querySelector('body')*/
-
         document.documentElement.innerHTML = html.toString();
     })
 
@@ -72,16 +40,23 @@ describe('tests form to add new posts', () => {
         
     // })
 
-    test('Check if page initialises with content', ()=>{
+    test('Check if page initialises with test database post', ()=>{
         fetch = jest.fn(() => Promise.resolve({
-            json: () => Promise.resolve(journals),
+            json: () => Promise.resolve(backup),
         }));
-        console.log(journals)
         window.scroll = jest.fn();
         require('../../client/static/JS/index');
         expect(fetch.mock.calls.length).toBe(1)
         expect(fetch.mock.calls[0][0]).toBe('http://localhost:3000/getall')
-        console.log(document.documentElement.innerHTML)
+        fetch()
+        .then(res=>res.json()).then(() => {
+            //spoofs the fetch
+            //probably bad form but by the time this is loaded we know the actual page has loaded
+            //console.log(`inside of fetch${document.documentElement.innerHTML}`)
+            const content = document.getElementById('dynamic')
+            //console.log(content.firstChild.innerHTML)
+            expect(content.firstChild.innerHTML).toBe(`<h2 class="blogTitle">Stabby Dog</h2><img class="gifContainer" src="https://media3.giphy.com/media/iDJQRjTCenF7A4BRyU/giphy.gif?cid=ab93a719zj9j2p00dtl4wepbfm5y97p789n4ud2wetss4tri&amp;rid=giphy.gif&amp;ct=g"><p class="blogContent">Here is a stabby dog</p><div class="buttonParent"><form class="reactForm"><button id="thumbButtonUp" type="submit"></button><button id="thumbButtonDown" type="submit"></button><button id="eyesButton" type="submit"></button><input id="articleID2" type="hidden" class="articleID" value="0"></form><button class="commentButton">Add Comment</button><button></button></div><form class="commentForm"><input maxlength="256" type="text" class="commentBody"><input id="articleID" type="hidden" class="articleID" value="0"><input type="submit" value="Submit Comment" class="submitComment"></form><div class="commentDiv"><hr><p class="comment"></p></div>`)
+        })
     })
 
 })

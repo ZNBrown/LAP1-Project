@@ -45,6 +45,7 @@ app.post('/comment', (req, res)=>{
 
 //Save user reactions to journals.json
 app.post('/react', (req, res)=> {
+    console.log("reached server")
     articleID = req.body.data.articleID;
     journalToReact = journals.articles[articleID]
     submitterID = req.body.data.submitterID;
@@ -77,7 +78,7 @@ app.post('/react', (req, res)=> {
     fs.writeFile('./journals.json', JSON.stringify(journals), (error)=> {
         if (error) throw error ; console.log("File saved")
     })
-    res.status(201).json({"message": "all good! : )"}).status(201);
+    res.status(201).json({"message": "all good! : )"});
 })
 
 //add new article
@@ -113,11 +114,13 @@ app.post('/article', (req, res) => {
     })
     res.status(201).json({"message": "Article submitted"});
 
+
 })
 
 function calcWeighting(articleID){
     //obtains the number of reactions for each emoji based on the article ID passed to the function
     let reactStats = journals.articles[articleID]['reactions'];
+    console.log(`reactst ${reactStats}`)
     let thumbsUp = reactStats[0]["thumbsUp"];
     let thumbsDown = reactStats[1]["thumbsDown"];
     let eyes = reactStats[2]['eyes'];
@@ -125,7 +128,7 @@ function calcWeighting(articleID){
     //if the article has no reactions it is likely new and so is given a base weighting of 5 so that it is seen
     if (thumbsUp === 0 && thumbsDown === 0 && eyes === 0){
         weighting = 5;
-        console.log(weighting);
+        console.log(`this is weighting if ${weighting}`);
         return weighting
     } else {
         //points are assigned based on the type of reaction
@@ -133,7 +136,7 @@ function calcWeighting(articleID){
         //thumbsDown is worth -1
         //eyes is worth 2
         weighting = thumbsUp + 2*eyes - thumbsDown;
-        console.log(weighting);
+        console.log(`this is weighting else ${weighting}`);
     }   return weighting;
     
 

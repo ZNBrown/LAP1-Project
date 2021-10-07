@@ -1,25 +1,22 @@
+const express = require('express');
 const request = require("supertest")
 const server = require("../server")
 const journals = require('../journals.json')
+
 const testDB = require('../backup.json')
-const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const journalBackup = journals;
 
-console.log(testDB)
-cleanDatabase()
-console.log(journals)
-
 
 async function cleanDatabase(){
-    await fs.writeFile(path.join(__dirname, '..', 'journals.json'), JSON.stringify(testDB), (error)=> {
+    await fs.writeFile(path.join(__dirname, '../', 'journals.json'), JSON.stringify(testDB), (error)=> {
         if (error) throw error ; console.log("DB changed to testDB")
     })
 }
 
 async function restoreDB(done){
-    await fs.writeFile(path.resolve('../', 'journals.json') , JSON.stringify(journalBackup), (error)=> {
+    await fs.writeFile(path.join(__dirname, '../', 'journals.json') , JSON.stringify(journalBackup), (error)=> {
         if (error) throw error ; console.log("DB changed back to live")
     })
 }
@@ -27,8 +24,10 @@ async function restoreDB(done){
 describe("Naive tests for api response", () => {
     let app;
     let testComment = { "data" : { "articleID": 0, "commentData" : "this is a test comment" } }
-    let testReact =  { "data" : { "articleID": 0, "submitterID" : "thumbButtonUp" } }
-    let testArticle =  { "data" : { "title": "This is my test blog title", "content" : "This is my test content" } }
+    let testReactUp =  { "data" : { "articleID": 0, "submitterID" : "thumbButtonUp" } }
+    let testReactDown =  { "data" : { "articleID": 0, "submitterID" : "thumbButtonDown" } }
+    let testReactEyes =  { "data" : { "articleID": 0, "submitterID" : "eyesButton" } }
+    let testArticle =  { "data" : { "title": "This is my test blog title made by jest", "content" : "This is my test content", "gifUrl" : "example" } }
 
     
     beforeAll(()=> {
@@ -49,6 +48,7 @@ describe("Naive tests for api response", () => {
     })
 
     it("adds a new article", done => {
+        console.log(`sending new article ${testArticle}`);
         request(app)
         .post("/article")
         .send(testArticle)
@@ -58,19 +58,25 @@ describe("Naive tests for api response", () => {
         .expect(201, done);
     })
 
-    it("reaches / ", done => {
+    it("nothing at / ", done => {
         request(app)
         .get("/")
-        .expect("Content-Type", "application/json; charset=utf-8")
-        .expect(200, done)
+        .expect("Content-Type", "text/html; charset=utf-8")
+        .expect(404, done)
     })
 
-    it("returns the correct database on /getall", done => {
-        request(app)
-        .get("/getall")
-        .expect("Content-Type", "application/json; charset=utf-8")
-        .expect(journals)
-        .expect(200, done)
+
+    it('returns the correct database on /getall', async () => {
+        const res = await request(app).get('/getall').expect("Content-Type", "application/json; charset=utf-8")
+        let temp = journals.articles[journals.articles.length - 1].date
+        let isSame = false;
+        journals.articles[journals.articles.length - 1].date = JSON.stringify(journals.articles[journals.articles.length - 1].date).replace(`\"`, ``).replace(`\"`, ``)
+        if(res.body == journals)
+        {
+            isSame = true;
+        }
+        expect(res.body).toEqual(journals)
+        journals.articles[journals.articles.length - 1].date = temp;
     })
 
 
@@ -86,10 +92,28 @@ describe("Naive tests for api response", () => {
 
     })
 
-    it("reacts to article", done => {
+    it("reacts to article with thumbup", done => {
         request(app)
         .post("/react")
-        .send(testReact)
+        .send(testReactUp)
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json; charset=utf-8')
+        .expect({message : "all good! : )"})
+        .expect(201, done);
+    })
+    it("reacts to article with thumbdown", done => {
+        request(app)
+        .post("/react")
+        .send(testReactDown)
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json; charset=utf-8')
+        .expect({message : "all good! : )"})
+        .expect(201, done);
+    })
+    it("reacts to article with eyes", done => {
+        request(app)
+        .post("/react")
+        .send(testReactEyes)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json; charset=utf-8')
         .expect({message : "all good! : )"})

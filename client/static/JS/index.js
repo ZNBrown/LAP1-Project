@@ -64,7 +64,7 @@ function initialise() {
                     // gifLink.id = `gifLink${a}`
                     gif.addEventListener('click', () => {
                         document.querySelector('#gifLink').value = gifUrl;
-                        gif.style.border = "2px solid blue";
+                        gif.style.border = "2px solid gold";
                         setTimeout(() => { gif.style.border = "0px"}, 500)
                     })
                 }

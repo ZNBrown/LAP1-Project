@@ -305,4 +305,4 @@ function getJournals(position=0) {
 
 
 initialise();
-getJournals().catch(e => {console.warn(`Error ${e} when rendering posts`)});
+getJournals();

@@ -75,19 +75,22 @@ function initialise() {
             try {
                 //obtains the desired search term
                 searchterm = e.target.searchGif.value;
-                
+                //fetches gifs based on search term from giphy
+                //link is set to return 6 gifs
                 let response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=VUq7xxD1xM1rS9w2Typt9A6VC7soZwLY&q=${searchterm}&limit=6&offset=0&rating=r&lang=en`)
                 let data = await response.json()
                 console.log(data.data[0])
+                //loops through the 6 gifs returned from Giphy
                 for(let a = 0; a<6;a++){
+                    //obtaines the url of gif and creates an image 
                     let gifUrl = data.data[a]['images']['original']['url'];
                     let gif = document.createElement('img');
                     gif.src = `${gifUrl}`;
                     gif.setAttribute("class","gif");
+                    //gif is added to the grided gifDisplay
                     document.querySelector('#gifDisplay').append(gif);
-                    // gifLink = document.createElement('input');
-                    // gifLink.type = "hidden";
-                    // gifLink.id = `gifLink${a}`
+                    //when clicked the gif is highlighted briefly in gold
+                    //the hidden form input gifLink is given the value of the chosen gif url
                     gif.addEventListener('click', () => {
                         document.querySelector('#gifLink').value = gifUrl;
                         gif.style.border = "2px solid gold";
@@ -103,8 +106,10 @@ function initialise() {
 
 async function handleEmoji(e) {
     e.preventDefault();
+    //each of the react buttons has its own submitter id
     let articleID = e.target.articleID2.value;
     let submitterID = e.submitter.id;
+    //the submitter id and article id is sent to the server in order to increment the required reaction and change the weighting
     let data = { articleID : articleID, submitterID : submitterID};
     try{
     response = await fetch("http://localhost:3000/react", {method: "POST", 
@@ -114,6 +119,7 @@ async function handleEmoji(e) {
 
     }
     catch(error) { console.warn(error) }
+    //the page is rebuilt automatically to reflect updated values
     refresh();
 }
 
@@ -125,15 +131,18 @@ async function handleComment(e){
     let data = { articleID : articleID, commentData : commentData};
     console.log(data)
     console.log(JSON.stringify(data))
+    // comment data and article ID are sent to the server to be added to journals.json
     await fetch("http://localhost:3000/comment", {method: "POST", 
     body: JSON.stringify({data}),
     headers : {"Content-Type" : "application/json" }})
     .catch(error => console.warn(error))
+    //refresh page to show newly added comments
     refresh();
 
 }
 
 function renderPosts(articleIDToPass, title, body, date, comments, reactions, position, gifUrl) {
+    //create all elements needed for the display of each article
     let parentDiv = document.createElement('div');
     let blogTitle = document.createElement('h2');
     let blogContent = document.createElement('p');
@@ -155,6 +164,9 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     let dateTime = document.createElement("p");
     let reactShowButton = document.createElement('button');
 
+    //adds functionality to the react button
+    //hides the comment related buttons and shows the reaction buttons
+    //only used when viewed on a device with a width of less than 700px
     reactShowButton.addEventListener('click', () => {
         if (commentButton.style.display === "none"){
             commentButton.style.display = "block";
@@ -167,6 +179,8 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
         }
     })
 
+    //adjusts the size of the post container to show the comments for each post
+    //if comments are visible the opposite happens
     showComments.addEventListener('click', () => {
         if (commentDiv.style.display === "block"){
             parentDiv.style.gridTemplateRows = "50px 1fr 50px";
@@ -180,6 +194,8 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
             commentForm.style.display = "none";
         }
     })
+
+    //Button to show/hide new comment form
     commentButton.addEventListener('click', () => {
         if (commentForm.style.display === "block"){
             parentDiv.style.gridTemplateRows = "50px 1fr 50px";
@@ -191,14 +207,23 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
             commentForm.style.display = "block";
         }
     })
+
+    //submits reaction to server
     reactForm.addEventListener('submit', handleEmoji);
+
+    //submits new comment to server
     commentForm.addEventListener('submit', handleComment);
 
+    //Add inner text to buttons
     commentButton.textContent = "Add Comment";
     showComments.innerText = 'Show Comments';
+    // Numbers representing the reactions are updated from the server
     thumbButtonUp.innerText = `👍 : ${reactions[0]['thumbsUp']}`;
     thumbButtonDown.innerText = `👎 : ${reactions[1]['thumbsDown']}`;
     eyesButton.innerText = `👀 : ${reactions[2]['eyes']}`;
+
+
+    //add ID's 
     thumbButtonDown.setAttribute('id', "thumbButtonDown");
     thumbButtonUp.setAttribute('id', "thumbButtonUp");
     eyesButton.setAttribute('id' , "eyesButton");
@@ -206,7 +231,7 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     articleID2.setAttribute('id',"articleID2" );
     commentBody.setAttribute('maxlength', "256");
     
-
+    //adds types to inputs
     thumbButtonDown.type = 'submit';
     thumbButtonUp.type = 'submit';
     eyesButton.type = 'submit';
@@ -215,8 +240,9 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     articleID2.type = 'hidden';
     submitComment.type = 'submit';
     submitComment.value = 'Submit Comment';
-   reactShowButton.textContent = "React"
+    reactShowButton.textContent = "React"
 
+    //set classes to added elements for styling
     parentDiv.setAttribute("class", "parentDiv");
     blogContent.setAttribute("class", "blogContent");
     blogTitle.setAttribute("class", "blogTitle");
@@ -234,6 +260,7 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     showComments.setAttribute("class","showComments");
     reactShowButton.setAttribute("class","reactShowButton");
 
+    //add individual comments to commentDiv
     commentDiv.append(divider);
     for (const comment of comments) {
         let commentToWrite = document.createElement('p');
@@ -242,30 +269,37 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
         commentDiv.append(commentToWrite);
     }
 
-
+    //append elements into their required parents
     reactForm.append(thumbButtonUp, thumbButtonDown, eyesButton, articleID2);
     commentForm.append(commentBody, articleID, submitComment);
     buttonParent.append(reactShowButton, reactForm, commentButton, showComments);
     parentDiv.append(blogTitle, dateTime, gifContainer, blogContent, buttonParent, commentForm, commentDiv);
     document.querySelector('#dynamic').append(parentDiv);
 
+    //set the data from the sever to corresponding elements
     blogTitle.textContent = title;
     blogContent.textContent = body;
     articleID.value = articleIDToPass;
     articleID2.value = articleIDToPass;
 
+    //gets time since post was created
     dateTime.textContent = timeSince(date);
+
+    //if no gif was set, the gif display box is hidden
     if (gifUrl === undefined || gifUrl === ''){
         gifUrl = '';
         gifContainer.style.display = 'none'
         parentDiv.style.gridTemplateColumns = "100%"
     }
+    //set the image source to the url stored in journals.json
     gifContainer.src = gifUrl;
+
+    //sets returns the user to their previous position on the page
     window.scroll(0, position);
 
 }
 
-
+//returns the age of posts in plain English
 function timeSince(date){
     postDate = Date.parse(date);
     now = new Date();
@@ -298,11 +332,14 @@ function timeSince(date){
         }
     }
 }
+
+//obtains all of the current articles
 function getJournals(position=0) {
     fetch("http://localhost:3000/getall")
     .then(res=>res.json()).then(data => {
         let journalNum = data.articles.length;
         let articles = data.articles;
+        //used to sort the posts based on their weighting
         function compare(a,b){
             if (a.weighting < b.weighting){
                 return 1;
@@ -314,6 +351,7 @@ function getJournals(position=0) {
         };
         articles.sort( compare );
         console.log(articles);
+        //obtains values and runs renderPosts function for each post
         for (let index = 0; index < journalNum; index++) {
             let title = articles[index]['title'];
             let body = articles[index]['body'];
@@ -327,6 +365,9 @@ function getJournals(position=0) {
     })
 }
 
+//ensures that the posts are brought in and displayed on reload of the page
 getJournals();
+
+//initialises buttons in the nav
 initialise();
 

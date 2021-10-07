@@ -11,7 +11,7 @@ const { info, count } = require('console');
 const { request } = require('express');
 
 
-// CORS HEADERS::
+// CORS HEADERS:
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*")
     res.header(
@@ -21,27 +21,29 @@ app.use((req, res, next) => {
     next()
 });
 
-app.get('/', (req, res) => {
-    res.json(journals.articles[0])
-})
 
 //get all articles
+//returns the entire contents journals.json file for sorting and display by the client
 app.get('/getall', (req, res) => {
     res.json(journals).status(200);
 })
 
-//put comment to certain article
+// Saves user comments against the corresponding journal
 app.post('/comment', (req, res)=>{
     articleID = req.body.data.articleID;
+    //Obtains the specific journal based on the article id and pushes the new comment to the comment array
     journalToComment = journals.articles[articleID];
     commentData = req.body.data.commentData;
     journalToComment.comments.push(commentData);
+
+    // the updated journals object is then saved back in journals.json, overwriting the original content
     fs.writeFile('./journals.json', JSON.stringify(journals), (error)=> {
         if (error) throw error ; console.log("File saved")
     })
     res.status(201).json({"message": "Comment appended successfully"});
 })
-//put emoji to certain article
+
+//Save user reactions to journals.json
 app.post('/react', (req, res)=> {
     console.log("reached server")
     articleID = req.body.data.articleID;
@@ -50,6 +52,8 @@ app.post('/react', (req, res)=> {
     let counter;
     switch(submitterID){
         case 'thumbButtonUp':
+            //counter is given the current value for the given reaction
+            // counter is then incremented and the new value returned to the journals object
             counter = parseInt(journalToReact.reactions[0].thumbsUp)
             counter++;
             journalToReact.reactions[0].thumbsUp = counter;
@@ -65,8 +69,12 @@ app.post('/react', (req, res)=> {
             journalToReact.reactions[2].eyes = counter;
             break;
     }
+    // each article is given a weighting based on the number of reactions against it
+    // after each new reaction, the weighting is re-calculated and its value saved to journals.
     let weight = calcWeighting(articleID);
     journalToReact.weighting = weight;
+
+    //the ammended journals object is saved into journal.json, overwriting the previous values.
     fs.writeFile('./journals.json', JSON.stringify(journals), (error)=> {
         if (error) throw error ; console.log("File saved")
     })
@@ -76,26 +84,28 @@ app.post('/react', (req, res)=> {
 //add new article
 app.post('/article', (req, res) => {
     let info = req.body.data
+    //the article ID is equal to the position in the articles array inside journal.json
     let articleId = journals.articles.length
+    // the current date and time is saved to enable an age to be displayed in the client
     let today = new Date();
-    console.log(today);
-    console.log(`reached here and happy ${articleId}`);
-
-    let weight = calcWeighting(articleId)
-    console.log("reached here and happy1");
-
-    // let date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear() + " - " + today.getHours() + ":" + today.getMinutes() +":"+ today.getSeconds();
+    
+    reactions = [{"thumbsUp" : 0}, {"thumbsDown" : 0}, {"eyes" : 0}]
+    
+    //newArticle matches the format of journals.json
     let newArticle = { "articleID" : articleId,
         "title" : info.title,
         "body" : info.content,
         "date" : today,
         "comments" : [],
         "reactions" : [{"thumbsUp" : 0}, {"thumbsDown" : 0}, {"eyes" : 0}],
-        "gifUrl" : info.gifUrl,
-        "weighting":weight
+        "gifUrl" : info.gifUrl
     }
-    console.log("reached here and happy2");
+    
+    // all articles must have a weighting, as a new article has no reactions it is artificially moved up the rankings
+    let weight = calcWeighting(articleId);
+    newArticle['weighting'] = weight;
 
+    //the new article is appended to the article array and saved into journals.json
     journals.articles.push(newArticle);
     console.log("reached here and happy3");
 
@@ -108,16 +118,23 @@ app.post('/article', (req, res) => {
 })
 
 function calcWeighting(articleID){
+    //obtains the number of reactions for each emoji based on the article ID passed to the function
     let reactStats = journals.articles[articleID]['reactions'];
     console.log(`reactst ${reactStats}`)
     let thumbsUp = reactStats[0]["thumbsUp"];
     let thumbsDown = reactStats[1]["thumbsDown"];
     let eyes = reactStats[2]['eyes'];
+
+    //if the article has no reactions it is likely new and so is given a base weighting of 5 so that it is seen
     if (thumbsUp === 0 && thumbsDown === 0 && eyes === 0){
         weighting = 5;
         console.log(`this is weighting if ${weighting}`);
         return weighting
     } else {
+        //points are assigned based on the type of reaction
+        //thumbsUp is worth 1
+        //thumbsDown is worth -1
+        //eyes is worth 2
         weighting = thumbsUp + 2*eyes - thumbsDown;
         console.log(`this is weighting else ${weighting}`);
     }   return weighting;

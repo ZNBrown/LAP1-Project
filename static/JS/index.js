@@ -128,6 +128,7 @@ async function handleComment(e){
     let articleID = e.target.articleID.value;
     let commentData = e.target[0].value;
     let data = { articleID : articleID, commentData : commentData};
+    console.log(data)
     // comment data and article ID are sent to the server to be added to journals.json
     await fetch("https://viral-eyes.herokuapp.com/comment", {method: "POST", 
     body: JSON.stringify({data}),

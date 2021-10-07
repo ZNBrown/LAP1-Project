@@ -7,9 +7,6 @@ const fetch = require('node-fetch');
 const journals = require('./journals.json')
 const fs = require('fs');
 
-const { info, count } = require('console');
-const { request } = require('express');
-
 
 // CORS HEADERS:
 app.use((req, res, next) => {

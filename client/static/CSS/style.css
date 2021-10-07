@@ -1,71 +1,149 @@
 
 body {
-    margin: 10px;
+    margin: 0px;
     background-color: lightgray;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;
+    padding-top: 0px;
+    font-family: "Light 300", "Roboto", sans-serif;
+
 }
 
 h1 {
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
-    position: relative;
-    bottom: 120px;       
+    position:relative;
+    justify-content: center;
+    color: white;
+    font-size: 40px;
 }
 
-#header {
-    height: auto;
+#title{
+    align-self: center;
+    justify-self: center;
+    grid-column-start: 2;
+    grid-row-start: 1;
+    height: 100%;
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav {
+    height: 200px;
     width: 100%;
-    background-color: lightsalmon;
-    max-width: auto;
+    background-color: rgb(101, 58, 219);
     max-height: 160px;
-    
-    
+    z-index: 1;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.6);
+    display: grid;
+    grid-template-columns: 20% 60% 20%;
+    z-index: 1;
+    position:inherit;
 }
 
-#newPostArea {
-    height: 500px;
-    width: 50%;
-    background-color: lightskyblue;
-    position: relative;
-    margin: 50px auto;
-    padding: 30px;
-}
-
-#newJournalTitle {
-    position: absolute;
-    left: 0px;
-    top: 0px;
-}
-
-#newJournalBody {
-    position: absolute;
+header{
+    position: fixed;
     width: 100%;
-    
-    top: 100px;
-    
-    height: 300px;
+    z-index: 1;
 }
 
 #newJournalForm {
+    margin-top: 150px;
+    height: 500px;
+    width: 80%;
+    background-color: rgb(172, 158, 211);
     position: relative;
+    align-self: center;
+    padding: 20px;
+    display: none;
+    margin-left: 8.75%;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    justify-self: center;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 20% 1fr 20%;
+    z-index: 0;
 }
 
-#newJournalSend {
-    position: absolute;
-    top: 480px;
-    left: 0px;
+#newJournalTitle {
+    grid-column-start: 1;
+    grid-row-start: 1;
+    
 }
+
+
+
+
+#newJournalBody {
+
+   
+    
+    grid-row-start: 2;
+    grid-column-start: 1;
+    box-sizing: border-box;
+    height: 300px;
+
+    resize: none;
+}
+
+
 
 #newJournal {
+    grid-column-start: 1;
+    grid-row-start: 3;
+}
+#newJournalButton {
     height: 100px;
     width: 100px;
-    background-color: rgb(61, 219, 61);
-    position: relative;
-    margin: 30px;
-    display: inline;
+    background-color: rgb(154, 197, 36);
+    grid-column-start: 1;
+    grid-row-start: 3;
+    margin: 20px;
+    justify-self: flex-start;
+    grid-column-start: 1;
+    grid-row-start: 1;
+    background-image: url("https://cdn.icon-icons.com/icons2/2645/PNG/512/pen_icon_159934.png");
+    background-size: 100px 100px;
+    border: 0px;
+    filter: invert(1);
 }
 
+.newJournalFormClass{
+    box-sizing: border-box;
+    margin: 10px;
+    border-radius: 10px;
+    border: 2px lightgray;
+    padding: 10px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 100;
+}
+
+#gifButton{
+    grid-column-start: 2;
+    grid-row-start: 3;
+}
+
+#gifDisplay{
+    grid-column-start: 2;
+    grid-row-start: 2;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-template-rows: 50% 50%;
+    max-height: 300px;
+    max-width: 100%;
+    margin: 10px;
+}
+
+.gif{
+    max-height: 100%;
+    max-width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+}
 *{
     margin: 0px;
     padding: 0px;
@@ -96,7 +174,7 @@ h1 {
     flex-direction: column;
     width: 100%;
     align-items: center;
-
+    padding-top: 200px;
 }
 
 .commentForm{
@@ -121,9 +199,31 @@ h1 {
 
 .blogTitle{
     grid-row-start: 1;
+    grid-column-start: 1;
     margin: 50px;
     text-align: center;
     display: block;
+}
+
+.dateTime{
+    grid-row-start: 1;
+    grid-column-start: 1;
+    justify-self: end;
+    padding-top: 0px;
+    font-family: "Thin 100 italic", "Roboto", sans-serif;
+    font-style: italic;
+    font-weight: 100;
+    font-size: 90%;
+
+}
+#eyeImage{
+    grid-column-start: 2;
+    grid-row-start: 1;
+    max-width: 100%;
+    max-height: 100%;
+    height: 110px;
+    width: 100px ;
+    align-self: center;
 }
 
 .blogContent{
@@ -139,6 +239,7 @@ h1 {
     max-height: 100%;
     box-sizing: border-box;
     scrollbar-width: none;
+    border-radius: 5px;
 }
 
 .gifContainer{
@@ -172,18 +273,68 @@ hr{
     display: none;
   }
 
+.reactShowButton{
+    padding: 0px;
+    display: none;
+}
 
 
-  #thumbButtonUp{
-      margin-right: 10px;
-      padding: 5px;
-  }
-  #thumbButtonDown{
-      margin-right: 10px;
-      padding: 5px;
-  }
-  #eyesButton{
-      margin-right: 10px;
-      padding: 5px;
-  }
 
+.showComments, .reactShowButton, .commentButton, #thumbButtonUp, #thumbButtonDown, #eyesButton{
+    border:0px;
+    border-radius: 5px;
+    background-color: rgb(220, 220, 220);
+    padding:5px;
+    margin-right: 10px;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: rgb(50, 50, 50);
+        color: white;
+    }
+
+    .parentDiv{
+        background-color: rgb(120, 120, 120);
+    }
+
+    .blogContent{
+        background-color: rgb(210, 210, 210);
+        color: black;
+    }
+
+    .showComments, .reactShowButton, .commentButton, #thumbButtonUp, #thumbButtonDown, #eyesButton{
+        background-color: rgb(180, 180, 180);
+    }
+}
+
+@media only screen and (max-width: 815px) {
+    .showComments, .reactShowButton, .commentButton, #thumbButtonUp, #thumbButtonDown, #eyesButton{
+        height: 30px;
+        padding: 0px;
+        margin: 0px;
+        align-self: center;
+        
+    }
+    .reactForm{
+        display: flex;
+    }
+}
+
+@media only screen and (max-width: 600px){
+    .reactShowButton{
+        display: block;
+    }
+    .reactForm{
+        display: none;
+    }
+
+    .gifContainer{
+        display: none;
+    }
+    .parentDiv{
+        grid-template-columns: 100%;
+    }
+}

@@ -5,6 +5,8 @@ body {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;
     padding-top: 0px;
+    font-family: "Light 300", "Roboto", sans-serif;
+
 }
 
 h1 {
@@ -12,7 +14,8 @@ h1 {
     text-align: center;
     position:relative;
     justify-content: center;
-  
+    color: white;
+    font-size: 40px;
 }
 
 #title{
@@ -30,12 +33,14 @@ h1 {
 nav {
     height: 200px;
     width: 100%;
-    background-color: lightsalmon;
+    background-color: rgb(101, 58, 219);
     max-height: 160px;
     z-index: 1;
     box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.6);
     display: grid;
     grid-template-columns: 20% 60% 20%;
+    z-index: 1;
+    position:inherit;
 }
 
 header{
@@ -45,19 +50,23 @@ header{
 }
 
 #newJournalForm {
+    margin-top: 150px;
     height: 500px;
     width: 80%;
-    background-color: lightskyblue;
+    background-color: rgb(172, 158, 211);
     position: relative;
     align-self: center;
     padding: 20px;
     display: none;
     margin-left: 8.75%;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
-
+    border-radius: 10px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
     justify-self: center;
     grid-template-columns: 50% 50%;
     grid-template-rows: 20% 1fr 20%;
+    z-index: 0;
 }
 
 #newJournalTitle {
@@ -71,7 +80,7 @@ header{
 
 #newJournalBody {
 
-    width: 100%;
+   
     
     grid-row-start: 2;
     grid-column-start: 1;
@@ -84,25 +93,33 @@ header{
 
 
 #newJournal {
-    height: 100px;
-    width: 100px;
-    background-color: rgb(61, 219, 61);
-   
-    margin: 0px;
     grid-column-start: 1;
     grid-row-start: 3;
 }
 #newJournalButton {
     height: 100px;
     width: 100px;
-    background-color: rgb(61, 219, 61);
+    background-color: rgb(154, 197, 36);
     grid-column-start: 1;
     grid-row-start: 3;
     margin: 20px;
     justify-self: flex-start;
     grid-column-start: 1;
     grid-row-start: 1;
+    background-image: url("https://cdn.icon-icons.com/icons2/2645/PNG/512/pen_icon_159934.png");
+    background-size: 100px 100px;
+    border: 0px;
+    filter: invert(1);
+}
 
+.newJournalFormClass{
+    box-sizing: border-box;
+    margin: 10px;
+    border-radius: 10px;
+    border: 2px lightgray;
+    padding: 10px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 100;
 }
 
 #gifButton{
@@ -118,6 +135,7 @@ header{
     grid-template-rows: 50% 50%;
     max-height: 300px;
     max-width: 100%;
+    margin: 10px;
 }
 
 .gif{
@@ -191,6 +209,11 @@ header{
     grid-row-start: 1;
     grid-column-start: 1;
     justify-self: end;
+    padding-top: 0px;
+    font-family: "Thin 100 italic", "Roboto", sans-serif;
+    font-style: italic;
+    font-weight: 100;
+    font-size: 90%;
 
 }
 #eyeImage{
@@ -198,7 +221,7 @@ header{
     grid-row-start: 1;
     max-width: 100%;
     max-height: 100%;
-    height: 100px;
+    height: 110px;
     width: 100px ;
     align-self: center;
 }
@@ -260,10 +283,11 @@ hr{
 .showComments, .reactShowButton, .commentButton, #thumbButtonUp, #thumbButtonDown, #eyesButton{
     border:0px;
     border-radius: 5px;
-    background-color: rgb(160, 160, 160);
+    background-color: rgb(220, 220, 220);
     padding:5px;
     margin-right: 10px;
     box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -281,8 +305,8 @@ hr{
         color: black;
     }
 
-    #thumbButtonUp, #thumbButtonDown, #eyesButton {
-        background-color: rgb(160, 160, 160);
+    .showComments, .reactShowButton, .commentButton, #thumbButtonUp, #thumbButtonDown, #eyesButton{
+        background-color: rgb(180, 180, 180);
     }
 }
 
@@ -292,6 +316,7 @@ hr{
         padding: 0px;
         margin: 0px;
         align-self: center;
+        
     }
     .reactForm{
         display: flex;

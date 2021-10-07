@@ -101,14 +101,21 @@ app.post('/article', (req, res) => {
         "gifUrl" : info.gifUrl
     }
     
+    //the new article is appended to the article array and saved into journals.json
+    journals.articles.push(newArticle); 
+    
     // all articles must have a weighting, as a new article has no reactions it is artificially moved up the rankings
     let weight = calcWeighting(articleId);
     newArticle['weighting'] = weight;
 
+<<<<<<< HEAD
     //the new article is appended to the article array and saved into journals.json
     journals.articles.push(newArticle);
     console.log("reached here and happy3");
 
+=======
+    
+>>>>>>> origin/staging
     fs.writeFile('./journals.json', JSON.stringify(journals), (error)=> {
         if (error) throw error ; console.log("File saved")
     })

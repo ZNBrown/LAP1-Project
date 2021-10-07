@@ -79,7 +79,11 @@ app.post('/article', (req, res) => {
     let articleId = journals.articles.length
     let today = new Date();
     console.log(today);
+    console.log(`reached here and happy ${articleId}`);
+
     let weight = calcWeighting(articleId)
+    console.log("reached here and happy1");
+
     // let date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear() + " - " + today.getHours() + ":" + today.getMinutes() +":"+ today.getSeconds();
     let newArticle = { "articleID" : articleId,
         "title" : info.title,
@@ -90,26 +94,32 @@ app.post('/article', (req, res) => {
         "gifUrl" : info.gifUrl,
         "weighting":weight
     }
+    console.log("reached here and happy2");
+
     journals.articles.push(newArticle);
+    console.log("reached here and happy3");
+
     fs.writeFile('./journals.json', JSON.stringify(journals), (error)=> {
         if (error) throw error ; console.log("File saved")
     })
     res.status(201).json({"message": "Article submitted"});
 
+
 })
 
 function calcWeighting(articleID){
     let reactStats = journals.articles[articleID]['reactions'];
+    console.log(`reactst ${reactStats}`)
     let thumbsUp = reactStats[0]["thumbsUp"];
     let thumbsDown = reactStats[1]["thumbsDown"];
     let eyes = reactStats[2]['eyes'];
     if (thumbsUp === 0 && thumbsDown === 0 && eyes === 0){
         weighting = 5;
-        console.log(weighting);
+        console.log(`this is weighting if ${weighting}`);
         return weighting
     } else {
         weighting = thumbsUp + 2*eyes - thumbsDown;
-        console.log(weighting);
+        console.log(`this is weighting else ${weighting}`);
     }   return weighting;
     
 

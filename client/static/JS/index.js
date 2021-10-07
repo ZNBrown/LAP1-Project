@@ -1,28 +1,39 @@
 
-
+//This is the user specific key required for the Giphy API
 const APIkey = 'VUq7xxD1xM1rS9w2Typt9A6VC7soZwLY';
 
-function exampleFetch() {
-    fetch("http://localhost:3000/")
-    .then(res=>res.json()).then(data => (console.log(data)))
-}
+//This is unused in the operation of the client, was used to test that data was returned from the server
+// function exampleFetch() {
+//     fetch("http://localhost:3000/")
+//     .then(res=>res.json()).then(data => (console.log(data)))
+// }
 
+
+//the refresh function tears down the main content of the page and re-builds it
 function refresh(){
-
+    //The users current scroll position is saved
     position = window.scrollY
+    //This will sequentially remove all content inside the 'dynamic' container
+    //'dynamic' is the container that stores the journals
     section = document.getElementById('dynamic')
     while(section.firstChild){
         section.firstChild.remove()
     }
+    //when 'dynamic' has been cleared, getJournals is called to re-build with updated content
+    //position is passed so the user can be restored to the same place on the page
     getJournals(position);
 }
 
+
+//The initialise function deals with the functionality of the nav bar and the new article form
+//This is where the Giphy API is used
 function initialise() {
+    
     let newJournalButton = document.getElementById('newJournalButton');
     let newJournalForm = document.getElementById('newJournalForm');
 
 
-
+    //The event listener below is used to toggle the display of the new journal form
     newJournalButton.addEventListener('click', ()=> {
         if(newJournalForm.style.display === 'grid'){
             newJournalForm.style.display = 'none'
@@ -31,12 +42,15 @@ function initialise() {
         }
         
     })
+
+
     newJournalForm.addEventListener('submit', async (e)=> {
         e.preventDefault();
-        console.log(e);
 
+        //the submitter ID is used to decide whether to poll the Giphy API or send data to the server
         submitterID = e.submitter.id;
         if (submitterID === "newJournal"){
+            //the contents of the form are passed to the new article function in the server
             let title = e.target.newJournalTitle.value;
             let content = e.target.newJournalBody.value;
             let gifUrl = document.querySelector('#gifLink').value;
@@ -48,16 +62,20 @@ function initialise() {
                 headers : {"Content-Type" : "application/json" }
                 })
             } catch(error) { console.warn(error) }
+            // refresh is called so that the new article will be displayed without a manual refresh
             refresh();
+            //the contents of the form are cleared ready for the next use
             document.querySelector('#newJournalTitle').value = "";
             document.querySelector('#newJournalBody').value = ""; 
             document.querySelector('#newJournalForm').style.display = 'none';
             document.querySelector('#gifDisplay').innerHTML = '';
             document.querySelector('#searchGif').value = "";
+            document.querySelector('#gifLink').value = "";
         }   else if (submitterID === "gifButton"){
             try {
+                //obtains the desired search term
                 searchterm = e.target.searchGif.value;
-                console.log(searchterm);
+                
                 let response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=VUq7xxD1xM1rS9w2Typt9A6VC7soZwLY&q=${searchterm}&limit=6&offset=0&rating=r&lang=en`)
                 let data = await response.json()
                 console.log(data.data[0])

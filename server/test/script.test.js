@@ -14,10 +14,10 @@ const html = fs.readFileSync(path.resolve(__dirname, '..', '..', './client', './
 document.documentElement.innerHTML = html.toString();
 
 
+
 //current issue: not sure how to setup and teardown
 
 describe('tests interactive elements', () => {
-    jest.setTimeout(100000);
 
     beforeAll(() => {
         document.documentElement.innerHTML = html.toString();
@@ -27,18 +27,45 @@ describe('tests interactive elements', () => {
         document.documentElement.innerHTML = html.toString();
       });
 
-      test('Check if we can react to the first post', async ()=>{
+    test('Check if we can react to the first post', async ()=>{
+
+        await loaded();
+        function loaded() {
+            return new Promise(function (resolve, reject) {
+              document.addEventListener('DOMContentLoaded', function () {
+                console.log('loaded');
+                resolve();
+              });
+            });
+          }
+
+
+        // window.onload = (event) => {
+        //     console.log('page is fully loaded');
+        // };
+
+        // await new Promise((r) => setTimeout(r, 4000));
+
+
+        // new Promise(function(resolve, reject){
+        //     window.onload = resolve();
+        //  })
+        //  .then(console.log(document.getElementById('dynamic').innerHTML))
+        //  .catch(console.log('wrong loading page'));
+
+
+
+
         fetch = jest.fn(() => Promise.resolve({
             json: () => Promise.resolve(backup),
         }));
         window.scroll = jest.fn();
 
         require('../../client/static/JS/index');
-        await new Promise((r) => setTimeout(r, 1000));
         
         const content = document.getElementById('dynamic');
         const parent = content.firstChild;
-        const form = parent.querySelector('.reactForm');
+        const form = document.querySelector('.reactForm');
         const articleID2 = document.getElementById('articleID2');
         // button.click(); bad idea: event information not sent
         // have the form send an event that mirrors the click instead
@@ -48,7 +75,7 @@ describe('tests interactive elements', () => {
         submitEvent.submitter = {"id" : "thumbButtonUp"};
         Object.defineProperty(submitEvent, 'target', {writable: false, value: {"articleID2" : {"value" : articleID2.value}}});
         form.dispatchEvent(submitEvent);
-        expect(fetch.mock.calls.length).toBe(2)
+        expect(fetch.mock.calls.length).toBe(1)
         expect(fetch.mock.calls[1][0]).toBe('http://localhost:3000/react')
         expect(fetch.mock.calls[1][1].body).toBe(`{"data":{"articleID":"0","submitterID":"thumbButtonUp"}}`)
         //render test post
@@ -57,12 +84,12 @@ describe('tests interactive elements', () => {
         const newJournalForm = document.getElementById('newJournalForm')
         const newJournalTitle = document.getElementById('newJournalTitle')
         const newJournalBody = document.getElementById('newJournalBody')
+    })
 
         // newJournalTitle.value = "newJournalTitle";
         // newJournalBody.value = "newJournalBody";
         // submitEvent.submitter = {"id" : "thumbButtonUp"};
         // Object.defineProperty(submitEvent, 'target', {writable: false, value: {"articleID2" : {"value" : articleID2.value}}});
-        })   
 
     // test('Check if page calls correct fetches', async()=>{
     //     fetch = jest.fn(() => Promise.resolve({

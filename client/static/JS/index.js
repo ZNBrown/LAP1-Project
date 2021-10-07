@@ -275,5 +275,6 @@ async function getJournals(position=0) {
     }
 }
 
-getJournals().catch(e => {console.warn(`Error ${e} when rendering posts`)});
+
 initialise();
+getJournals().catch(e => {console.warn(`Error ${e} when rendering posts`)});

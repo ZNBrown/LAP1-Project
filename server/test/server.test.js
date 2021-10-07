@@ -23,7 +23,9 @@ async function restoreDB(done){
 describe("Naive tests for api response", () => {
     let app;
     let testComment = { "data" : { "articleID": 0, "commentData" : "this is a test comment" } }
-    let testReact =  { "data" : { "articleID": 0, "submitterID" : "thumbButtonUp" } }
+    let testReactUp =  { "data" : { "articleID": 0, "submitterID" : "thumbButtonUp" } }
+    let testReactDown =  { "data" : { "articleID": 0, "submitterID" : "thumbButtonDown" } }
+    let testReactEyes =  { "data" : { "articleID": 0, "submitterID" : "eyesButton" } }
     let testArticle =  { "data" : { "title": "This is my test blog title", "content" : "This is my test content", "gifUrl" : "example" } }
 
     
@@ -82,10 +84,28 @@ describe("Naive tests for api response", () => {
 
     })
 
-    it("reacts to article", done => {
+    it("reacts to article with thumbup", done => {
         request(app)
         .post("/react")
-        .send(testReact)
+        .send(testReactUp)
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json; charset=utf-8')
+        .expect({message : "all good! : )"})
+        .expect(201, done);
+    })
+    it("reacts to article with thumbdown", done => {
+        request(app)
+        .post("/react")
+        .send(testReactDown)
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json; charset=utf-8')
+        .expect({message : "all good! : )"})
+        .expect(201, done);
+    })
+    it("reacts to article with eyes", done => {
+        request(app)
+        .post("/react")
+        .send(testReactEyes)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json; charset=utf-8')
         .expect({message : "all good! : )"})

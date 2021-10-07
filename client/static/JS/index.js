@@ -4,7 +4,7 @@ const APIkey = 'VUq7xxD1xM1rS9w2Typt9A6VC7soZwLY';
 
 //This is unused in the operation of the client, was used to test that data was returned from the server
 // function exampleFetch() {
-//     fetch("http://localhost:3000/")
+//     fetch("https://viral-eyes.herokuapp.com/")
 //     .then(res=>res.json()).then(data => (console.log(data)))
 // }
 
@@ -56,7 +56,7 @@ function initialise() {
             let gifUrl = document.querySelector('#gifLink').value;
             let data = { "title": title, "content": content, "gifUrl": gifUrl};
             try {
-                response = await fetch("http://localhost:3000/article", {method: "POST", 
+                response = await fetch("https://viral-eyes.herokuapp.com/article", {method: "POST", 
                 body: JSON.stringify({data}),
                 headers : {"Content-Type" : "application/json" }
                 })
@@ -110,7 +110,7 @@ async function handleEmoji(e) {
     //the submitter id and article id is sent to the server in order to increment the required reaction and change the weighting
     let data = { articleID : articleID, submitterID : submitterID};
     try {
-        const response = await fetch("http://localhost:3000/react", {method: "POST", 
+        const response = await fetch("https://viral-eyes.herokuapp.com/react", {method: "POST", 
         body: JSON.stringify({data}),
         headers : {"Content-Type" : "application/json" }})
         const uniqueReturn = await response.json();
@@ -129,7 +129,7 @@ async function handleComment(e){
     let commentData = e.target.commentData.value;
     let data = { articleID : articleID, commentData : commentData};
     // comment data and article ID are sent to the server to be added to journals.json
-    await fetch("http://localhost:3000/comment", {method: "POST", 
+    await fetch("https://viral-eyes.herokuapp.com/comment", {method: "POST", 
     body: JSON.stringify({data}),
     headers : {"Content-Type" : "application/json" }})
     .catch(error => console.warn(error))
@@ -332,7 +332,7 @@ function timeSince(date){
 
 //obtains all of the current articles
 function getJournals(position=0) {
-    fetch("http://localhost:3000/getall")
+    fetch("https://viral-eyes.herokuapp.com/getall")
     .then(res=>res.json()).then(data => {
         let journalNum = data.articles.length;
         let articles = data.articles;

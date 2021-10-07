@@ -306,7 +306,7 @@ hr{
     }
 
     .showComments, .reactShowButton, .commentButton, #thumbButtonUp, #thumbButtonDown, #eyesButton{
-        background-color: rgb(180, 180, 180);
+        background-color: rgb(180, 180, 18  0);
     }
 }
 
@@ -323,7 +323,8 @@ hr{
     }
 }
 
-@media only screen and (max-width: 600px){
+
+@media only screen and (max-width: 700px){
     .reactShowButton{
         display: block;
     }

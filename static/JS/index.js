@@ -126,7 +126,7 @@ async function handleEmoji(e) {
 async function handleComment(e){
     e.preventDefault();
     let articleID = e.target.articleID.value;
-    let commentData = e.target.commentData.value;
+    let commentData = e.target[0].value;
     let data = { articleID : articleID, commentData : commentData};
     // comment data and article ID are sent to the server to be added to journals.json
     await fetch("https://viral-eyes.herokuapp.com/comment", {method: "POST", 

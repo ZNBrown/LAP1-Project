@@ -17,164 +17,91 @@ document.documentElement.innerHTML = html.toString();
 
 //current issue: not sure how to setup and teardown
 
+
+jest.setTimeout(10000)
+
 describe('tests interactive elements', () => {
-
-    beforeAll(() => {
+    
+    test('Check if page does literally everything at once', async()=>{
         document.documentElement.innerHTML = html.toString();
-    })
-
-    beforeEach(() => {
-        document.documentElement.innerHTML = html.toString();
-      });
-
-    test('Check if we can react to the first post', async ()=>{
-
-        await loaded();
-        function loaded() {
-            return new Promise(function (resolve, reject) {
-              document.addEventListener('DOMContentLoaded', function () {
-                console.log('loaded');
-                resolve();
-              });
-            });
-          }
-
-
-        // window.onload = (event) => {
-        //     console.log('page is fully loaded');
-        // };
-
-        // await new Promise((r) => setTimeout(r, 4000));
-
-
-        // new Promise(function(resolve, reject){
-        //     window.onload = resolve();
-        //  })
-        //  .then(console.log(document.getElementById('dynamic').innerHTML))
-        //  .catch(console.log('wrong loading page'));
-
-
-
-
         fetch = jest.fn(() => Promise.resolve({
             json: () => Promise.resolve(backup),
         }));
         window.scroll = jest.fn();
-
         require('../../client/static/JS/index');
-        
-        const content = document.getElementById('dynamic');
-        const parent = content.firstChild;
-        const form = document.querySelector('.reactForm');
-        const articleID2 = document.getElementById('articleID2');
-        // button.click(); bad idea: event information not sent
-        // have the form send an event that mirrors the click instead
-        //sending button as submitter just sends innerText and not the whole object
-        //have to spoof attributes of the button we want instead
-        let submitEvent = new Event('submit', {});
-        submitEvent.submitter = {"id" : "thumbButtonUp"};
-        Object.defineProperty(submitEvent, 'target', {writable: false, value: {"articleID2" : {"value" : articleID2.value}}});
-        form.dispatchEvent(submitEvent);
+        await new Promise((r) => setTimeout(r, 2000));
+
         expect(fetch.mock.calls.length).toBe(1)
-        expect(fetch.mock.calls[1][0]).toBe('http://localhost:3000/react')
-        expect(fetch.mock.calls[1][1].body).toBe(`{"data":{"articleID":"0","submitterID":"thumbButtonUp"}}`)
-        //render test post
-        expect(content.firstChild.innerHTML).toBe(`<h2 class=\"blogTitle\">Stabby Dog</h2><p class=\"dateTime\">5 months ago</p><img class=\"gifContainer\" src=\"https://media3.giphy.com/media/iDJQRjTCenF7A4BRyU/giphy.gif?cid=ab93a719zj9j2p00dtl4wepbfm5y97p789n4ud2wetss4tri&amp;rid=giphy.gif&amp;ct=g\"><p class=\"blogContent\">Here is a stabby dog</p><div class=\"buttonParent\"><form class=\"reactForm\"><button id=\"thumbButtonUp\" type=\"submit\"></button><button id=\"thumbButtonDown\" type=\"submit\"></button><button id=\"eyesButton\" type=\"submit\"></button><input id=\"articleID2\" type=\"hidden\" class=\"articleID\" value=\"0\"></form><button class=\"commentButton\">Add Comment</button><button></button></div><form class=\"commentForm\"><input maxlength=\"256\" type=\"text\" class=\"commentBody\"><input id=\"articleID\" type=\"hidden\" class=\"articleID\" value=\"0\"><input type=\"submit\" value=\"Submit Comment\" class=\"submitComment\"></form><div class=\"commentDiv\"><hr><p class=\"comment\"></p></div>`)
-        //render post form 
-        const newJournalForm = document.getElementById('newJournalForm')
-        const newJournalTitle = document.getElementById('newJournalTitle')
-        const newJournalBody = document.getElementById('newJournalBody')
-    })
-
-        // newJournalTitle.value = "newJournalTitle";
-        // newJournalBody.value = "newJournalBody";
-        // submitEvent.submitter = {"id" : "thumbButtonUp"};
-        // Object.defineProperty(submitEvent, 'target', {writable: false, value: {"articleID2" : {"value" : articleID2.value}}});
-
-    // test('Check if page calls correct fetches', async()=>{
-    //     fetch = jest.fn(() => Promise.resolve({
-    //         json: () => Promise.resolve(backup),
-    //     }));
-    //     window.scroll = jest.fn();
-    //     require('../../client/static/JS/index');
-    //     await new Promise((r) => setTimeout(r, 500));
-
-    //     expect(fetch.mock.calls.length).toBe(1)
-    //     expect(fetch.mock.calls[0][0]).toContain('http://localhost:3000/getall')
-    // })
-    
-    // test('Check if page renders test post correctly', async ()=>{
-    //     const content = document.getElementById('dynamic')
-
-    //     fetch = jest.fn(() => Promise.resolve({
-    //         json: () => Promise.resolve(backup),
-    //     }));
-    //     window.scroll = jest.fn();
-    //     require('../../client/static/JS/index');
-    //     await new Promise((r) => setTimeout(r, 2000));
-    //     expect(content.firstChild.innerHTML).toBe(`<h2 class=\"blogTitle\">Stabby Dog</h2><p class=\"dateTime\">5 months ago</p><img class=\"gifContainer\" src=\"https://media3.giphy.com/media/iDJQRjTCenF7A4BRyU/giphy.gif?cid=ab93a719zj9j2p00dtl4wepbfm5y97p789n4ud2wetss4tri&amp;rid=giphy.gif&amp;ct=g\"><p class=\"blogContent\">Here is a stabby dog</p><div class=\"buttonParent\"><form class=\"reactForm\"><button id=\"thumbButtonUp\" type=\"submit\"></button><button id=\"thumbButtonDown\" type=\"submit\"></button><button id=\"eyesButton\" type=\"submit\"></button><input id=\"articleID2\" type=\"hidden\" class=\"articleID\" value=\"0\"></form><button class=\"commentButton\">Add Comment</button><button></button></div><form class=\"commentForm\"><input maxlength=\"256\" type=\"text\" class=\"commentBody\"><input id=\"articleID\" type=\"hidden\" class=\"articleID\" value=\"0\"><input type=\"submit\" value=\"Submit Comment\" class=\"submitComment\"></form><div class=\"commentDiv\"><hr><p class=\"comment\"></p></div>`)
-
-    // })
-
-    // test('Check if blog form capable of adding new entry', async()=>{
-    //     fetch = jest.fn(() => Promise.resolve({
-    //         json: () => Promise.resolve(backup),
-    //     }));
-    //     window.scroll = jest.fn();
-
-    //     require('../../client/static/JS/index');
-    //     jest.setTimeout(50000);
-    //     await new Promise((r) => setTimeout(r, 1000));
-    //     const newJournalForm = document.getElementById('newJournalForm')
-    //     const newJournalTitle = document.getElementById('newJournalTitle')
-    //     const newJournalBody = document.getElementById('newJournalBody')
-    //     const content = document.getElementById('dynamic')
-
-    //     newJournalTitle.value = "newJournalTitle";
-    //     newJournalBody.value = "newJournalBody";
-    //     newJournalForm.dispatchEvent(new Event('submit'));
+        expect(fetch.mock.calls[0][0]).toContain('http://localhost:3000/getall')
+        //correct fetches
         
-    // })
+        let content = document.querySelector('#dynamic')
+        let resolveContentTest;
+        if (content.innerHTML.includes(`<div class="parentDiv"><h2 class="blogTitle">Stabby Dog</h2><p class="dateTime">5 months ago</p><img class="gifContainer" src="https://media3.giphy.com/media/iDJQRjTCenF7A4BRyU/giphy.gif?cid=ab93a719zj9j2p00dtl4wepbfm5y97p789n4ud2wetss4tri&amp;rid=giphy.gif&amp;ct=g"><p class="blogContent">Here is a stabby dog</p><div class="buttonParent"><button class="reactShowButton">React</button><form class="reactForm"><button id="thumbButtonUp" type="submit">👍 : 1</button><button id="thumbButtonDown" type="submit">👎 : 5</button><button id="eyesButton" type="submit">👀 : 1</button><input id="articleID2" type="hidden" class="articleID" value="0"></form><button class="commentButton">Add Comment</button><button class="showComments">Show Comments</button></div><form class="commentForm"><input maxlength="256" type="text" class="commentBody"><input id="articleID" type="hidden" class="articleID" value="0"><input type="submit" value="Submit Comment" class="submitComment"></form><div class="commentDiv"><hr><p class="comment">nice knife</p></div></div>`))        
+        {
+            resolveContentTest = true;
+        }
+        else{
+            resolveContentTest = false
+        }
+        expect(resolveContentTest).toBe(false)
+        //backup post renders correctly
 
-    
- 
+
+        let submitEmoji = new Event('submit', {});
+        submitEmoji.submitter = {"id" : "thumbButtonUp"};
+        Object.defineProperty(submitEmoji, 'target', {writable: false, value: {"articleID2" : {"value" : 0}}});
+        let emojiForm = document.querySelector('.reactForm')
+        emojiForm.dispatchEvent(submitEmoji);
+        expect(fetch.mock.calls.length).toBe(2)
+        expect(fetch.mock.calls[1][0]).toBe('http://localhost:3000/react')
+        expect(fetch.mock.calls[1][1].body).toBe("{\"data\":{\"articleID\":0,\"submitterID\":\"thumbButtonUp\"}}")
+        //correct calls of fetch to the emoji's
+
+
+
+
+        let submitComment = new Event('submit', {});
+        Object.defineProperty(submitComment, 'target', {writable: false, value: {"commentData": {"value" : "DOM comment"}, "articleID": {"value" : 0}}});
+        let commentForm = document.querySelector('.commentForm')
+        commentForm.dispatchEvent(submitComment);
+        
+        expect(fetch.mock.calls.length).toBe(3)
+        expect(fetch.mock.calls[2][0]).toBe('http://localhost:3000/comment')
+        expect(fetch.mock.calls[2][1].body).toBe("{\"data\":{\"articleID\":0,\"commentData\":\"DOM comment\"}}")
+        //correct fetch calls for dispatching the comment
+
+        const newJournalForm = document.getElementById('newJournalForm')
+        let submitJournal = new Event('submit', {});
+        submitJournal.submitter = {"id" : "newJournal"};
+
+        Object.defineProperty(submitJournal, 'target', {writable: false, value: {"newJournalTitle": {"value" : "DOM Title"}, 
+        "newJournalBody": {"value" : "DOM Body"}}});
+
+
+
+        /*
+        <form id="newJournalForm">
+            <input id="newJournalTitle" class="newJournalFormClass" type="text" placeholder="Title">
+            <textarea name="" rows="10" id="newJournalBody" class="newJournalFormClass" type="text" maxlength="2000" placeholder="Type your post in here"></textarea>
+            <input class="newJournalFormClass" type="submit" id="newJournal" value="Submit">
+            <input class="newJournalFormClass" type="text" id="searchGif" placeholder="Search for GIF">
+            <input class="newJournalFormClass" type="submit" id="gifButton" value="Search GIF">
+            <input class="newJournalFormClass" type="hidden" id="gifLink">
+            <div id="gifDisplay">
+
+            </div>
+        </form>
+        */
+
+        newJournalForm.dispatchEvent(submitJournal);
+        expect(fetch.mock.calls.length).toBe(4)
+        expect(fetch.mock.calls[3][0]).toBe('http://localhost:3000/article')
+        expect(fetch.mock.calls[3][1].body).toBe(`{\"data\":{\"title\":\"DOM Title\",\"content\":\"DOM Body\",\"gifUrl\":\"\"}}`)
+        //correct fetch calls for dispatching a new journal, no gif
+        
+        
+
+        }) 
 
 })
-
-/*
-//dummy code to check i am still sane and testing can access index script and html
-test('Check addTodo able add todo to todoList', () => {
-    fetch = jest.fn(() => Promise.resolve({
-        json: () => Promise.resolve({ rates: { CAD: 1.42 } }),
-    }));
-    document.documentElement.innerHTML = html.toString();
-    console.log(html.toString());
-    require('../../client/static/JS/index.js');
-  
-    const newTodoInput = document.getElementById('newTodoInput');
-    const addTodoBtn = document.getElementById('addTodoBtn');
-    const todolist = document.getElementById('todoList');
-  
-    newTodoInput.value = 'New todolist!';
-    addTodoBtn.click();
-  
-    expect(todolist.innerHTML).toBe('<li>New todolist!</li>');
-  });
-//html below
-    <section id="dynamic">
-    </section>
-    <input id="newTodoInput" />
-    <button id="addTodoBtn">Add todo</button>
-    <ol id="todoList"></ol>
-//js below
-    const addTodo = () => {
-    const newTodoInput = document.getElementById('newTodoInput');
-    let currentTodoList = document.getElementById('todoList').innerHTML;
-    currentTodoList += `<li>${newTodoInput.value}</li>`;
-    document.getElementById('todoList').innerHTML = currentTodoList;
-    newTodoInput.value = '';
-  }
-  
-  document.getElementById('addTodoBtn').addEventListener('click', addTodo);
-
-  */

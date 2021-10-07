@@ -9,7 +9,7 @@ const journalBackup = journals;
 
 
 async function cleanDatabase(){
-    await fs.writeFile(path.join(__dirname, '..', 'journals.json'), JSON.stringify(testDB), (error)=> {
+    await fs.writeFile(path.join(__dirname, '../', 'journals.json'), JSON.stringify(testDB), (error)=> {
         if (error) throw error ; console.log("DB changed to testDB")
     })
 }
@@ -47,6 +47,7 @@ describe("Naive tests for api response", () => {
     })
 
     it("adds a new article", done => {
+        console.log(`sending new article ${testArticle}`);
         request(app)
         .post("/article")
         .send(testArticle)
@@ -56,11 +57,11 @@ describe("Naive tests for api response", () => {
         .expect(201, done);
     })
 
-    it("reaches / ", done => {
+    it("nothing at / ", done => {
         request(app)
         .get("/")
-        .expect("Content-Type", "application/json; charset=utf-8")
-        .expect(200, done)
+        .expect("Content-Type", "text/html; charset=utf-8")
+        .expect(404, done)
     })
 
     it("returns the correct database on /getall", done => {

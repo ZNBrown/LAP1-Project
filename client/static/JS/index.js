@@ -95,12 +95,9 @@ async function handleEmoji(e) {
 
 async function handleComment(e){
     e.preventDefault();
-    console.log(e);
     let articleID = e.target.articleID.value;
-    let commentData = e.target[0].value;
+    let commentData = e.target.commentData.value;
     let data = { articleID : articleID, commentData : commentData};
-    console.log(data)
-    console.log(JSON.stringify(data))
     await fetch("http://localhost:3000/comment", {method: "POST", 
     body: JSON.stringify({data}),
     headers : {"Content-Type" : "application/json" }})
@@ -275,6 +272,7 @@ function timeSince(date){
     }
 }
 function getJournals(position=0) {
+    console.log("doing a getall fetch");
     fetch("http://localhost:3000/getall")
     .then(res=>res.json()).then(data => {
         let journalNum = data.articles.length;
@@ -289,7 +287,6 @@ function getJournals(position=0) {
             }
         };
         articles.sort( compare );
-        console.log(articles);
         for (let index = 0; index < journalNum; index++) {
             let title = articles[index]['title'];
             let body = articles[index]['body'];

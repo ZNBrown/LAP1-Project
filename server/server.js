@@ -108,14 +108,7 @@ app.post('/article', (req, res) => {
     let weight = calcWeighting(articleId);
     newArticle['weighting'] = weight;
 
-<<<<<<< HEAD
-    //the new article is appended to the article array and saved into journals.json
-    journals.articles.push(newArticle);
-    console.log("reached here and happy3");
-
-=======
     
->>>>>>> origin/staging
     fs.writeFile('./journals.json', JSON.stringify(journals), (error)=> {
         if (error) throw error ; console.log("File saved")
     })

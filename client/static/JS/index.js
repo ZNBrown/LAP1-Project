@@ -55,7 +55,6 @@ function initialise() {
             let content = e.target.newJournalBody.value;
             let gifUrl = document.querySelector('#gifLink').value;
             let data = { "title": title, "content": content, "gifUrl": gifUrl};
-            console.log(data);
             try {
                 response = await fetch("http://localhost:3000/article", {method: "POST", 
                 body: JSON.stringify({data}),
@@ -79,7 +78,6 @@ function initialise() {
                 //link is set to return 6 gifs
                 let response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=VUq7xxD1xM1rS9w2Typt9A6VC7soZwLY&q=${searchterm}&limit=6&offset=0&rating=r&lang=en`)
                 let data = await response.json()
-                console.log(data.data[0])
                 //loops through the 6 gifs returned from Giphy
                 for(let a = 0; a<6;a++){
                     //obtaines the url of gif and creates an image 
@@ -130,8 +128,6 @@ async function handleComment(e){
     let articleID = e.target.articleID.value;
     let commentData = e.target.commentData.value;
     let data = { articleID : articleID, commentData : commentData};
-    console.log(data)
-    console.log(JSON.stringify(data))
     // comment data and article ID are sent to the server to be added to journals.json
     await fetch("http://localhost:3000/comment", {method: "POST", 
     body: JSON.stringify({data}),
@@ -336,7 +332,6 @@ function timeSince(date){
 
 //obtains all of the current articles
 function getJournals(position=0) {
-    console.log("doing a getall fetch");
     fetch("http://localhost:3000/getall")
     .then(res=>res.json()).then(data => {
         let journalNum = data.articles.length;
@@ -352,7 +347,6 @@ function getJournals(position=0) {
             }
         };
         articles.sort( compare );
-        console.log(articles);
         //obtains values and runs renderPosts function for each post
         for (let index = 0; index < journalNum; index++) {
             let title = articles[index]['title'];

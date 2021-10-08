@@ -42,7 +42,15 @@ Working in a team of three we created a community journaling website. The websit
 
 ### Installation & usage
 
+1. Clone the files from the repository
+2. From your machine navigate to the server folder
+3. Type "npm install" in the CLI (this will install the node modules needed)
+4. Type "node index.js in the CLI (this will start the server)
+5. Navigate to "index.html" and open with live server from your code editor
 
+**Usage**
+
+To start a new post, click on the pen icon
 
 ### Technologies
 

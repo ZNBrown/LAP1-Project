@@ -7,33 +7,33 @@
     <script src="./static/JS/index.js" defer></script>
     <link rel="stylesheet" href="static/CSS/style.css">
     <title>Large</title>
-    <link rel="stylesheet" href="./static/CSS/style.css">
+    <link rel="shortcut icon" href="./static/favicon.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;1,100&display=swap" rel="stylesheet"> 
 </head>
 <body>
     <header>
-        <div id="header">
-             
-    
+            <!-- creates the nav bar at page top -->
+            <nav class>
+                <button id="newJournalButton"></button>
+                <article id="title">
+                    <img src="./static/favicon.png" alt="viral eyes" id="eyeImage">
+                    <h1>Viral Eyes</h1>
 
-            <button id="newJournal">Add<br> New<br> Post
-            </button>
-
-            <h1>BLOG</h1>
-        </div>
+                </article>
+            </nav>
+        <!-- Form for creation of new posts, normally hidden -->
+        <form id="newJournalForm">
+            <input id="newJournalTitle" class="newJournalFormClass" type='text' placeholder="Title">
+            <textarea name="" rows="10" id='newJournalBody' class="newJournalFormClass" type='text' maxlength="2000"  placeholder="Type your post in here"></textarea>
+            <input class="newJournalFormClass" type='submit' id="newJournal" value='Submit'>
+            <input class="newJournalFormClass" type="text" id="searchGif" placeholder="Search for GIF">
+            <input class="newJournalFormClass" type="submit"  id="gifButton" value="Search GIF">
+            <input class="newJournalFormClass" type="hidden" id="gifLink">
+            <div id="gifDisplay"> </div>
+      </form>
     </header>
-
-    <button id="newJournal">New Journal</button>
-    <form id="newJournalForm">
-        <input id="newJournalTitle" type='text'>
-        <textarea name="" rows="10" id='newJournalBody' type='text' maxlength="256" placeholder="Type your post in here"></textarea>
-        <input type='submit' id="newJournal" value='Submit'>
-        <input type="text" id="searchGif" placeholder="Search for GIF">
-        <input type="submit"  id="gifButton" value="Search GIF">
-        <input type="hidden" id="gifLink">
-        <div id="gifDisplay">
-
-        </div>
-    </form>
     <section id="dynamic">
     </section>
 </body>

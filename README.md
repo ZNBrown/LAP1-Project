@@ -50,7 +50,12 @@ Working in a team of three we created a community journaling website. The websit
 
 **Usage**
 
-To start a new post, click on the pen icon
+To create a new post:
+1. Click on the pen icon (a text area should appear) 
+2. Enter a title for the post and then write your content
+3. If you would like to add a gif, type the subject of gif's you would like in the gif search area then click the search button
+4. Choose from the six options that appear by clicking on one (the chosen gif will be highlighted with a gold border, please note only the last gif clicked on will appear in your post)
+5. Press submit to post your article
 
 ### Technologies
 
@@ -65,36 +70,29 @@ HEROKU
 
 ### Process
 
-### Resources:
+**Resources:**
 
 * Google docs & slides
 * Figma
 
-### MoSCoW:
+**MoSCoW:**
 
 https://docs.google.com/document/d/1Viq22Uz-gRpAemfpmjcxoTiM15yMAGvSloK-wUsEkoA/edit?usp=sharing
 
-### Definition of Done:
+**Definition of Done:**
 
 * All unit tests passed
 * In case of untestable (UI style design), all team must agree on completion
 
-### Layout draft
+**Layout draft:**
 
 * https://www.figma.com/files/project/39470167/Team-project?fuid=1019929650607097230
  
-### Source of truth:
-
-
-
-
-### Licence
-
-
-
-Should have:
-
-Screenshots/Images
+Day 1 - Planning and UI
+Day 2 - Implementation
+Day 3 - Feature Design
+Day 4 - Testing
+Day 5 - Deploy Site and Presentation
 
 ### Wins & Challenges
 
@@ -106,9 +104,6 @@ Screenshots/Images
 
 * Giving a choice of GIFs from Giphy for each search term
 
-
-Could have:
-Badges
 ### Contribution guide
 
 ZNBrown - Lead Developer & Testing

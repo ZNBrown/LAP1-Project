@@ -1,4 +1,4 @@
-**LAP 1 Portfolio Week Project - VIRAL EYES**
+###LAP 1 Portfolio Week Project - VIRAL EYES
 
 ![image](https://user-images.githubusercontent.com/32695213/136435367-5548f821-4b7d-46e6-8784-513460ccd18a.png)
 

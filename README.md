@@ -1,20 +1,3 @@
-# LAP1-Project
-
-## Resources:
-### MoSCoW:
-https://docs.google.com/document/d/1Viq22Uz-gRpAemfpmjcxoTiM15yMAGvSloK-wUsEkoA/edit?usp=sharing
-### Source of truth:
-### Definition of Done:
-* All unit tests passed
-* In case of untestable (UI style design), all team must agree on completion
-### Frameworks and Libraries:
-* Express JS
-* Jest
-* Nodemon
-### Layout draft
-* https://www.figma.com/files/project/39470167/Team-project?fuid=1019929650607097230
-
-
 **LAP 1 Portfolio Week Project - VIRAL EYES**
 
 ![image](https://user-images.githubusercontent.com/32695213/136435367-5548f821-4b7d-46e6-8784-513460ccd18a.png)
@@ -64,6 +47,29 @@ HEROKU
 
 **Process**
 
+### Resources:
+
+* Google docs & slides
+* Figma
+
+### MoSCoW:
+
+https://docs.google.com/document/d/1Viq22Uz-gRpAemfpmjcxoTiM15yMAGvSloK-wUsEkoA/edit?usp=sharing
+
+### Definition of Done:
+
+* All unit tests passed
+* In case of untestable (UI style design), all team must agree on completion
+
+### Layout draft
+
+* https://www.figma.com/files/project/39470167/Team-project?fuid=1019929650607097230
+ 
+### Source of truth:
+
+
+
+
 **Licence**
 
 
@@ -97,9 +103,11 @@ Contribution guide
 
 **Bugs**
 
-Some timestamps for posts show as NaN
+-Some timestamps for posts show as NaN
 
-New posts go to the bottom of the feed
+-New posts go to the bottom of the feed
+
+-Sometimes the side scroll fails to work on larger screens
 
 **Future features**
 

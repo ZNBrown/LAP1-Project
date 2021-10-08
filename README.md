@@ -1,4 +1,4 @@
-###LAP 1 Portfolio Week Project - VIRAL EYES
+### LAP 1 Portfolio Week Project - VIRAL EYES
 
 ![image](https://user-images.githubusercontent.com/32695213/136435367-5548f821-4b7d-46e6-8784-513460ccd18a.png)
 
@@ -30,11 +30,11 @@ Working in a team of three we created a community journaling website. The websit
 
 -Your website should not have a database connected, instead any data sent and stored in your backend should be saved within .json files.
 
-**Installation & usage**
+### Installation & usage
 
 
 
-**Technologies**
+### Technologies
 
 GITHUB
 EXPRESS
@@ -45,7 +45,7 @@ SUPERTEST
 NETLIFY
 HEROKU
 
-**Process**
+### Process
 
 ### Resources:
 
@@ -70,7 +70,7 @@ https://docs.google.com/document/d/1Viq22Uz-gRpAemfpmjcxoTiM15yMAGvSloK-wUsEkoA/
 
 
 
-**Licence**
+### Licence
 
 
 
@@ -78,7 +78,7 @@ Should have:
 
 Screenshots/Images
 
-**Wins & Challenges**
+### Wins & Challenges
 
 -Adding the date to each post
 
@@ -91,9 +91,15 @@ Screenshots/Images
 
 Could have:
 Badges
-Contribution guide
+### Contribution guide
 
-**Code snippets**
+ZNBrown - Lead Developer & Testing
+
+jpxllington - Lead Developer & Front End CSS
+
+DesignedByQ - Front End CSS
+
+### Code snippets
 
 ![image](https://user-images.githubusercontent.com/32695213/136468934-89cf3562-30dc-4fd6-81f7-545a10dd3e12.png)
 
@@ -101,7 +107,7 @@ Contribution guide
 
 ![image](https://user-images.githubusercontent.com/32695213/136469406-10c44e9e-0b83-4139-8ce7-e3804f301725.png)
 
-**Bugs**
+### Bugs
 
 -Some timestamps for posts show as NaN
 
@@ -109,7 +115,7 @@ Contribution guide
 
 -Sometimes the side scroll fails to work on larger screens
 
-**Future features**
+### Future features
 
 -Social media integration i.e. tweet this blog
 

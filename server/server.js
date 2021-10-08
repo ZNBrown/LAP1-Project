@@ -69,12 +69,14 @@ app.post('/react', (req, res)=> {
             journalToReact.reactions[2].eyes = counter;
             break;
     }
+
     // each article is given a weighting based on the number of reactions against it
     // after each new reaction, the weighting is re-calculated and its value saved to journals.
     let weight = calcWeighting(articleID);
     journalToReact.weighting = weight;
 
     //the ammended journals object is saved into journal.json, overwriting the previous values.
+
     fs.writeFile('./journals.json', JSON.stringify(journals), (error)=> {
         if (error) throw error ; console.log("File saved")
     })
@@ -88,6 +90,7 @@ app.post('/article', (req, res) => {
     let articleId = journals.articles.length
     // the current date and time is saved to enable an age to be displayed in the client
     let today = new Date();
+
     
     reactions = [{"thumbsUp" : 0}, {"thumbsDown" : 0}, {"eyes" : 0}]
     
@@ -95,7 +98,7 @@ app.post('/article', (req, res) => {
     let newArticle = { "articleID" : articleId,
         "title" : info.title,
         "body" : info.content,
-        "date" : today,
+        "date" : date,
         "comments" : [],
         "reactions" : [{"thumbsUp" : 0}, {"thumbsDown" : 0}, {"eyes" : 0}],
         "gifUrl" : info.gifUrl
@@ -116,6 +119,7 @@ app.post('/article', (req, res) => {
 
 
 })
+
 
 function calcWeighting(articleID){
     //obtains the number of reactions for each emoji based on the article ID passed to the function
@@ -141,5 +145,6 @@ function calcWeighting(articleID){
     
 
 }
+
 
 module.exports=(app);

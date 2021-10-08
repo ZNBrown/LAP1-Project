@@ -28,19 +28,16 @@ function refresh(){
 //The initialise function deals with the functionality of the nav bar and the new article form
 //This is where the Giphy API is used
 function initialise() {
+
     
     let newJournalButton = document.getElementById('newJournalButton');
     let newJournalForm = document.getElementById('newJournalForm');
 
 
     //The event listener below is used to toggle the display of the new journal form
+
     newJournalButton.addEventListener('click', ()=> {
-        if(newJournalForm.style.display === 'grid'){
-            newJournalForm.style.display = 'none'
-        } else {
-            newJournalForm.style.display = 'grid'
-        }
-        
+        newJournalForm.style.display = 'block'
     })
 
 
@@ -74,6 +71,7 @@ function initialise() {
             try {
                 //obtains the desired search term
                 searchterm = e.target.searchGif.value;
+
                 //fetches gifs based on search term from giphy
                 //link is set to return 6 gifs
                 let response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=VUq7xxD1xM1rS9w2Typt9A6VC7soZwLY&q=${searchterm}&limit=6&offset=0&rating=r&lang=en`)
@@ -95,6 +93,7 @@ function initialise() {
                         setTimeout(() => { gif.style.border = "0px"}, 500)
                     })
                 }
+
             
             } catch (err) {console.warn(err)}
 
@@ -158,6 +157,7 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     let submitComment = document.createElement('input');
     let gifContainer = document.createElement('img');
     let divider = document.createElement('hr');
+
     let dateTime = document.createElement("p");
     let reactShowButton = document.createElement('button');
 
@@ -175,6 +175,7 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
             reactForm.style.display = "block";
         }
     })
+
 
     //adjusts the size of the post container to show the comments for each post
     //if comments are visible the opposite happens
@@ -227,6 +228,7 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     articleID.setAttribute('id',"articleID" );
     articleID2.setAttribute('id',"articleID2" );
     commentBody.setAttribute('maxlength', "256");
+
     
     //adds types to inputs
     thumbButtonDown.type = 'submit';
@@ -238,6 +240,7 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     submitComment.type = 'submit';
     submitComment.value = 'Submit Comment';
     reactShowButton.textContent = "React"
+
 
     //set classes to added elements for styling
     parentDiv.setAttribute("class", "parentDiv");
@@ -253,9 +256,7 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     submitComment.setAttribute("class", "submitComment");
     gifContainer.setAttribute("class", "gifContainer");
     commentDiv.setAttribute("class","commentDiv");
-    dateTime.setAttribute("class", "dateTime");
-    showComments.setAttribute("class","showComments");
-    reactShowButton.setAttribute("class","reactShowButton");
+    
 
     //add individual comments to commentDiv
     commentDiv.append(divider);
@@ -269,15 +270,16 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     //append elements into their required parents
     reactForm.append(thumbButtonUp, thumbButtonDown, eyesButton, articleID2);
     commentForm.append(commentBody, articleID, submitComment);
-    buttonParent.append(reactShowButton, reactForm, commentButton, showComments);
-    parentDiv.append(blogTitle, dateTime, gifContainer, blogContent, buttonParent, commentForm, commentDiv);
-    document.querySelector('#dynamic').append(parentDiv);
+    buttonParent.append(reactForm, commentButton, showComments);
+    parentDiv.append(blogTitle, gifContainer, blogContent, buttonParent, commentForm, commentDiv);
+    document.querySelector('#dynamic').prepend(parentDiv);
 
     //set the data from the sever to corresponding elements
     blogTitle.textContent = title;
     blogContent.textContent = body;
     articleID.value = articleIDToPass;
     articleID2.value = articleIDToPass;
+
 
     //gets time since post was created
     dateTime.textContent = timeSince(date);
@@ -295,6 +297,7 @@ function renderPosts(articleIDToPass, title, body, date, comments, reactions, po
     window.scroll(0, position);
 
 }
+
 
 //returns the age of posts in plain English
 function timeSince(date){
@@ -335,6 +338,7 @@ function getJournals(position=0) {
     fetch("http://localhost:3000/getall")
     .then(res=>res.json()).then(data => {
         let journalNum = data.articles.length;
+
         let articles = data.articles;
         //used to sort the posts based on their weighting
         function compare(a,b){
@@ -348,14 +352,15 @@ function getJournals(position=0) {
         };
         articles.sort( compare );
         //obtains values and runs renderPosts function for each post
+
         for (let index = 0; index < journalNum; index++) {
-            let title = articles[index]['title'];
-            let body = articles[index]['body'];
-            let comments = articles[index]['comments'];
-            let reactions = articles[index]['reactions'];
-            let date = articles[index]['date'];
-            let articleIDToPass = articles[index]['articleID'];
-            let gifLink = articles[index]['gifUrl']
+            let title = data.articles[index]['title'];
+            let body = data.articles[index]['body'];
+            let comments = data.articles[index]['comments'];
+            let reactions = data.articles[index]['reactions'];
+            let date = data.articles[index]['date'];
+            let articleIDToPass = data.articles[index]['articleID'];
+            let gifLink = data.articles[index]['gifUrl']
             renderPosts(articleIDToPass, title, body, date, comments, reactions, position, gifLink);
         }
     })

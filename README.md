@@ -4,31 +4,31 @@
 
 Working in a team of three we created a community journaling website. The website was designed to allow users to post content, comment on and react to existing posts. The project brief included the following:
 
--Users should be able to visit the website and anonymously post journal entries.
+* Users should be able to visit the website and anonymously post journal entries.
 
--Users should be limited to how many characters they can put in an entry.
+* Users should be limited to how many characters they can put in an entry.
 
--Users should be able to add gifs from giphy in an entry.
+* Users should be able to add gifs from giphy in an entry.
 
--Users should be able to view other peoples' entries.
+* Users should be able to view other peoples' entries.
 
--Users should be able to react to other peoples’ entries with an emoji.
+* Users should be able to react to other peoples’ entries with an emoji.
 
--Users should have three emojis to choose from.
+* Users should have three emojis to choose from.
 
--Users should be able to comment on other people’s entries.
+* Users should be able to comment on other people’s entries.
 
--Aim for minimum 60% test coverage.
+* Aim for minimum 60% test coverage.
 
--Your repos should have excellent READMEs.
+* Your repos should have excellent READMEs.
 
--Your website should be deployed.
+* Your website should be deployed.
 
--Your codebase should make good use of the technologies we have covered so far on the course.
+* Your codebase should make good use of the technologies we have covered so far on the course.
 
--You may bring in some node libraries for specialised behaviour eg. dayjs but no large front end frameworks such as React.
+* You may bring in some node libraries for specialised behaviour eg. dayjs but no large front end frameworks such as React.
 
--Your website should not have a database connected, instead any data sent and stored in your backend should be saved within .json files.
+* Your website should not have a database connected, instead any data sent and stored in your backend should be saved within .json files.
 
 ### Installation & usage
 
@@ -80,13 +80,13 @@ Screenshots/Images
 
 ### Wins & Challenges
 
--Adding the date to each post
+* Adding the date to each post
 
--Setting the posts to appear in order of popularity
+* Setting the posts to appear in order of popularity
 
--Testing
+* Testing
 
--Giving a choice of GIFs from Giphy for each search term
+* Giving a choice of GIFs from Giphy for each search term
 
 
 Could have:
@@ -109,27 +109,27 @@ DesignedByQ - Front End CSS
 
 ### Bugs
 
--Some timestamps for posts show as NaN
+* Some timestamps for posts show as NaN
 
--New posts go to the bottom of the feed
+* New posts go to the bottom of the feed
 
--Sometimes the side scroll fails to work on larger screens
+* Sometimes the side scroll fails to work on larger screens
 
 ### Future features
 
--Social media integration i.e. tweet this blog
+* Social media integration i.e. tweet this blog
 
--Home page with login/sign up
+* Home page with login/sign up
 
--User profiles
+* User profiles
 
--Post editing (of own posts)
+* Post editing (of own posts)
 
--Defined and extensive test suite for every feature
+* Defined and extensive test suite for every feature
 
--Smooth animations used across the site
+* Smooth animations used across the site
 
--Tagging system on posts
+* Tagging system on posts
 
--Search/filter by tags
+* Search/filter by tags
 

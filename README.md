@@ -8,6 +8,10 @@ Dark Mode
 
 ![image](https://user-images.githubusercontent.com/32695213/136527699-546bbd7a-a70b-4682-a644-d43d0a6c60a2.png)
 
+Adding Posts
+
+![image](https://user-images.githubusercontent.com/32695213/136530722-a1a50c19-31ac-4020-93f7-19600cf4962a.png)
+
 Working in a team of three we created a community journaling website. The website was designed to allow users to post content, comment on and react to existing posts. The project brief included the following:
 
 * Users should be able to visit the website and anonymously post journal entries.
